@@ -1,0 +1,2 @@
+ifconfig | grep broadcast | rev | cut -dt -f1 | rev | sed 's/ //g'
+arp -a | cut -d'(' -f2 | cut -d')' -f1 | grep "10.11"

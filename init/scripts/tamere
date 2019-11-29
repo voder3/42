@@ -1,0 +1,34 @@
+#!/bin/sh
+
+echo "esh c koi ton blaz"
+read blk
+# som=$((10 + 2 ))
+# echo "som = $som"
+if [ "$blk" = "pol" ]
+	then
+		echo "cc sa va"
+	else
+		echo "nul ton blaz mdr"
+fi
+
+if [ "14" -eq "14" ]
+then
+	echo "cool les maths"
+else
+	echo "rate sa march pa"
+fi
+
+for i in 1 2 3 5
+do
+	echo "loopiing ... number $i"
+done
+
+for i in $( jot 0 10 ); do echo "output: $i"; done
+
+max=10
+for (( i=2; i <= max; i++ ))
+do
+	echo "$i"
+done
+
+echo "fini mgl"

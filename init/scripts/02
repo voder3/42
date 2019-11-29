@@ -1,0 +1,2 @@
+killall -KILL -u $1
+userdel -r $1

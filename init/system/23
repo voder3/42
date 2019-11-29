@@ -1,0 +1,6 @@
+en graphique:
+se deconnecter de la session actuelle en cliquant sur le nom d'utilisateur en haut a droite, puis sur log out
+renseigner ses identifiants et mot de passe.
+
+en ssh :
+ssh [new_user]@[ip]

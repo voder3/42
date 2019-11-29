@@ -1,0 +1,17 @@
+console-setup.sh
+cron
+dbus
+exim4
+hwclock.sh
+irqbalance
+keyboard-setup.sh
+kmod
+networking
+procps
+rsync
+rsyslog
+ssh
+sudo
+udev
+
+ce sont des daemon, dans /etc/init.d
