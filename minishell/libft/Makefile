@@ -6,7 +6,7 @@
 #    By: artderva <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/15 18:05:08 by artderva          #+#    #+#              #
-#    Updated: 2019/11/14 20:41:21 by artderva         ###   ########.fr        #
+#    Updated: 2019/12/03 20:03:18 by artderva         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,7 +85,8 @@ SRC = ft_atoi.c \
 	ft_strjoin1.c \
 	ft_strjoin2.c \
 	get_next_line.c \
-	ft_fddel.c
+	ft_fddel.c \
+	ft_del_tab.c
 
 
 OBJ = $(SRC:.c=.o)

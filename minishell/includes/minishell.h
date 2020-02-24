@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:58 by artderva          #+#    #+#             */
-/*   Updated: 2019/11/29 04:20:08 by artderva         ###   ########.fr       */
+/*   Updated: 2020/01/22 21:07:08 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,67 @@
 
 # include "../libft/libft.h"
 # include <sys/param.h>
-
-typedef struct	s_env
-{
-       char                    *name;
-       char                    *value;
-       struct s_env    *next;
-}				t_env;
+# include "ft_printf.h"
 
 typedef struct	s_msh
 {
 	int		lr;
 	char	**input;
-	char	*path;
-	char	**env;
-	t_env	*envl;
+	char	*path; 
+	char	**envp;
+	t_list	*env_var;
 }				t_msh;
 
-t_env			*ft_setenvlist(char **env);
-char			*ft_getenv(t_env *env, char *name);
+typedef struct s_var
+{
+	char	*name;
+	char	*value;
+}				t_var;
 
-char			*ft_expanstr(char *str, t_env *env);
-char			*ft_getenvval(t_env *env, char *str);
+typedef struct 	s_builtin
+{
+	char	*b;
+	int		(*ft)(t_msh *msh);
+}				t_builtin;
+
+int				ft_setenvlist(t_list **list, char **envp);
+char			*ft_getenv(t_list *env, char *name);
+
+//char			*ft_expanstr(char *str, t_list *env);
+//char			*ft_getenvval(t_env *env, char *str);
 char			*ft_which(char *path, char *exec);
-char			**ft_unsetenvlist(t_env *env);
+//char			**ft_unsetenvlist(t_env *env);
 int				ft_is_exec(char *str, t_msh *msh);
-char			**ft_exp_str(char **input, t_env *env);
+char			**ft_exp_str(char **input, t_list *env);
 
-int				ft_setenv(t_msh *msh);
+int				ft_call_setenv(t_msh *msh);
 int				ft_unsetenv(t_msh *msh);
 int				ft_exit(t_msh *msh);
 int				ft_echo(t_msh *msh);
 int				ft_env(t_msh *msh);
 
 int				find_builtin(char *str, t_msh *msh);
+
+/****** env   ***/
+//int		ft_env(t_msh *msh);
+int		ft_call_setenv(t_msh *msh);
+int		ft_setenv(t_list *lst, char *var, char *value, int overw);
+int		ft_unsetenv(t_msh *msh);
+t_list	*setenv_find(t_list *lst, char *name);
+char	*ft_create_var_env(char **tab, int len0, int len1);
+char	**ft_create_tab_env(t_list *lst, int count);
+
+
+/*  cd   */
+int				ft_call_cd(t_msh *msh);
+int				ft_cd(char **str, t_msh *data);
+char			cd_getopt(char **str, int *i);
+int				cd_home(t_msh *msh);
+char			*cd_setcurpath(t_msh *data, char *opr);
+int				cd_logically(t_msh *data, char *curpath, char *opr);
+int				cd_change_directory(t_msh *data, char *curpath, char *opr, char *pwd);
+char			*ft_strrep(char *str, char *rem, char *rep);
+
+
+
 #endif
