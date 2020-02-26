@@ -39,7 +39,7 @@ int	mark_process_status(pid_t pid, int status)
 
 	if (pid > 0)
 	{
-		// job = ??? variable globale a set dans run_job
+		// job = ??? variable globale a set
 		while (job)
 		{
 			process = job->process;
@@ -86,7 +86,7 @@ void	wait_for_job(t_job *job)
 	pid = waitpid(WAIT_ANY, &status, WUNTRACED);
 	while (!mark_process_status(pid, status) && !job_is_stopped(job) && !job_is_completed(job))
 	{
-		pid = waitpid(WAIT_ANY, &status, WUNTRACED)
+		// ?
 	}
 
-}	
+}
