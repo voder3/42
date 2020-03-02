@@ -6,11 +6,11 @@
 /*   By: walden <walden@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 13:54:41 by walden          #+#    #+#             */
-/*   Updated: 2019/12/12 20:02:07 by artderva         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:45:46 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 int		ft_print_env_lst(t_list *env) // int juste pour call dans return ?
 {

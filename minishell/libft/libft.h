@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 19:16:39 by artderva          #+#    #+#             */
-/*   Updated: 2019/12/03 20:02:58 by artderva         ###   ########.fr       */
+/*   Updated: 2020/03/02 19:09:58 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,7 @@ char				*ft_strjoin2(char *s1, char *s2);
 int					get_next_line(const int fd, char **line);
 
 void				ft_del_tab(void **tab);
+
+char				*ft_strcut(char *str, char *d, unsigned int field);
 
 #endif

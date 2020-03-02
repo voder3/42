@@ -6,12 +6,13 @@
 /*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/05 20:54:53 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/01/22 21:07:05 by artderva         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:55:02 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdio.h>
+#include <dirent.h>
 
 char		*ft_pathjoin(char *str1, char *str2)
 {
@@ -49,4 +50,18 @@ char		*ft_strrep(char *str, char *rem, char *rep)
 		ft_strcat(ret, rep);
 	ft_strcat(ret, occurence + ft_strlen(rem));
 	return (ret);
+}
+
+int			ft_isdir(char *path)
+{
+	DIR		*dir;
+
+	if (!path)
+		return (0);
+	if ((dir = opendir(path)))
+	{
+		closedir(dir);
+		return (1);
+	}
+	return (0);
 }

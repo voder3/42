@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:58 by artderva          #+#    #+#             */
-/*   Updated: 2020/01/22 21:07:08 by artderva         ###   ########.fr       */
+/*   Updated: 2020/03/02 19:11:33 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libft/libft.h"
 # include <sys/param.h>
 # include "ft_printf.h"
+# include <stdarg.h>
 
 typedef struct	s_msh
 {
@@ -67,6 +68,7 @@ char	**ft_create_tab_env(t_list *lst, int count);
 
 
 /*  cd   */
+
 int				ft_call_cd(t_msh *msh);
 int				ft_cd(char **str, t_msh *data);
 char			cd_getopt(char **str, int *i);
@@ -74,8 +76,16 @@ int				cd_home(t_msh *msh);
 char			*cd_setcurpath(t_msh *data, char *opr);
 int				cd_logically(t_msh *data, char *curpath, char *opr);
 int				cd_change_directory(t_msh *data, char *curpath, char *opr, char *pwd);
-char			*ft_strrep(char *str, char *rem, char *rep);
 
+int				ft_isdir(char *path);
+char			*ft_strrep(char *str, char *rem, char *rep);
+char			*ft_pathjoin(char *s1, char *s2);
+
+int				cd_set_relativepath(t_msh *data, char *curpath, char *opr, char *pwd);
+char			*cd_del_dotcomponents(char *curpath, char *opr);
+int				check_chdir_errors(char **str, char *path, char *opr);
+int				check_whole_path(char *path);
+int				display_cd_errors(char *error);
 
 
 #endif

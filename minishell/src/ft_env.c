@@ -6,32 +6,11 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:05 by artderva          #+#    #+#             */
-/*   Updated: 2020/01/13 16:53:52 by artderva         ###   ########.fr       */
+/*   Updated: 2020/03/02 19:18:37 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char        *ft_strcut(char *str, char *delim, unsigned int field)
-{
-	int        i;
-	char    *res;
-	char    *tmp;
-
-	if ((tmp = ft_strstr(str, delim)) && field > 1)
-		return (ft_strcut(tmp + ft_strlen(delim), delim, field - 1));
-	else if (field == 0 || field > 1)
-		return (ft_strnew(0));
-	if (tmp)
-	{
-		i = tmp - str;
-		res = ft_strnew(i);
-		ft_strncpy(res, str, i);
-	}
-	else
-		res = ft_strdup(str);
-	return (res);
-}
 
 char	*ft_getenv(t_list *env, char *name)
 {

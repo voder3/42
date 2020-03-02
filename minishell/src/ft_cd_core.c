@@ -6,12 +6,11 @@
 /*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/05 20:47:58 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/01/22 18:00:08 by artderva         ###   ########.fr       */
+/*   Updated: 2020/03/02 19:02:05 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../includes/ft_printf.h"
 
 int		cd_home(t_msh *data)
 {
@@ -43,17 +42,17 @@ char	*cd_setcurpath(t_msh *data, char *opr)
 			&& ((ft_strncmp(opr, "../", 3)) || ft_strcmp(opr, "..")))
 		return (ft_strdup(opr));
 	ret = ft_getenv(data->env_var, "CDPATH");
-	cdpath = ft_strsplit(ret, ":");
+	cdpath = ft_strsplit(ret, ':');
 	while (cdpath && *cdpath)
 	{
 		ret = ft_pathjoin(*cdpath, opr);
-		if (ft_isdir(ret, 1))
+		if (ft_isdir(ret))
 			break ;
 		free(ret);
 		cdpath++;
 	}
 	ft_del_tab((void **)cdpath);
-	if (!ret && (ft_isdir(opr, 1)))
+	if (!ret && (ft_isdir(opr)))
 		return (ft_strdup(opr));
 	return (ret);
 }
@@ -106,7 +105,7 @@ int		cd_change_directory(t_msh *data, char *curpath, char *opr, char *pwd)
 
 	lst = setenv_find(data->env_var, "PWD");
 	if (lst)
-		oldpwd = ft_strdup(((t_var *)(lst->content))->tab[1]);
+		oldpwd = ft_strdup(((t_var *)(lst->content))->value);
 	else if (!(oldpwd = getcwd(NULL, 0)))
 		return (0);
 	if (chdir(curpath) == -1)

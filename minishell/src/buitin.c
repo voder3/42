@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 01:43:23 by artderva          #+#    #+#             */
-/*   Updated: 2020/01/22 20:02:31 by artderva         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:06:29 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		ft_built(int i, t_msh *msh)
 	int(*ft_bbbtin[6])(t_msh *);
 
 	ft_bbbtin[0] = &ft_echo;
-	ft_bbbtin[1] = &ft_call_cd;
+//	ft_bbbtin[1] = &ft_call_cd;
 //	ft_bbbtin[2] = &ft_call_setenv;
 //	ft_bbbtin[3] = &ft_unsetenv;
 //	ft_bbbtin[4] = &ft_env;
