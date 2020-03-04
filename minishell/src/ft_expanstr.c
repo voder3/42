@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-#include "../includes/minishell.h"
+#include <minishell.h>
 #include <stdio.h>
 
 char	*ft_getenvval(t_list *env, char *str)
@@ -20,9 +19,9 @@ char	*ft_getenvval(t_list *env, char *str)
 
 	while (env)
 	{
-		if (!ft_strcmp(((t_var *)(env->content))->name, str))
+		if (!ft_strcmp(((t_var *)(env->content))->tab[0], str))
 		{
-			if (!(val = ft_strdup(((t_var *)(env->content))->value)))
+			if (!(val = ft_strdup(((t_var *)(env->content))->tab[1])))
 				return (NULL);
 			return (val);
 		}

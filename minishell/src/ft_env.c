@@ -19,8 +19,8 @@ char	*ft_getenv(t_list *env, char *name)
 
 	while (env && !res)
 	{
-		if (!ft_strcmp(name,((t_var *)(env->content))->name))
-			res = ((t_var *)(env->content))->value;
+		if (!ft_strcmp(name,((t_var *)(env->content))->tab[0]))
+			res = ((t_var *)(env->content))->tab[1];
 		env = env->next;
 	}
 	return (res);
@@ -81,8 +81,8 @@ int		ft_setenvlist(t_list **list, char **envp)
 	*list = NULL;
 	while (envp[i])
 	{
-		env.name = ft_strcut(envp[i], "=", 1);
-		env.value = ft_strcut(envp[i], "=", 2);
+		env.tab[0] = ft_strcut(envp[i], "=", 1);
+		env.tab[1] = ft_strcut(envp[i], "=", 2);
 		ft_lst_push_back(list, &env, sizeof(t_var));
 		i++;
 	}

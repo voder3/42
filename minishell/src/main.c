@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-#include "../includes/minishell.h"
+#include "libft.h"
+#include "minishell.h"
 #include <stdio.h>
 
 int		yoyo(char *str, t_msh *msh)
@@ -26,7 +26,7 @@ int		yoyo(char *str, t_msh *msh)
 		return (0);
 	if (!(msh->input = ft_exp_str(msh->input, msh->env_var))) //exp_str segfot lol
 		return (0);
-	find_builtin(str, msh);
+//	find_builtin(str, msh);
 	//ft_is_exec(str, msh); //  a faire apres verif des builtine
 	return (0);
 }
@@ -49,6 +49,7 @@ int		main(int ac, char **av, char **env)
 	char	*pro;
 
 	i = 1;
+	ft_printf("COUCOU\n");
 	msh = ft_init(env);
 	ft_putendl("CC");
 	while (i)

@@ -6,15 +6,15 @@
 #    By: artderva <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/15 18:05:08 by artderva          #+#    #+#              #
-#    Updated: 2019/10/19 00:47:04 by artderva         ###   ########.fr        #
+#    Updated: 2020/03/02 19:10:25 by artderva         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -c
-
-SRC = ft_atoi.c \
+CFLAGS += -Wall -Wextra -Werror
+CFLAGS += -I includes
+SRCS = ft_atoi.c \
 	ft_bzero.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
@@ -84,20 +84,35 @@ SRC = ft_atoi.c \
 	ft_atoll.c \
 	ft_strjoin1.c \
 	ft_strjoin2.c \
-	get_next_line.c
+	get_next_line.c \
+	ft_fddel.c \
+	ft_del_tab.c \
+	ft_strcut.c	\
+	printf/conv_csp.c	\
+	printf/conv_di.c	\
+	printf/conv_f.c	\
+	printf/conv_negdi.c	\
+	printf/conv_oux.c	\
+	printf/datafs.c	\
+	printf/dispatch.c	\
+	printf/lenm.c	\
+	printf/printf.c	\
+	printf/things.c	\
+	printf/things2.c
 
+SRC = $(addprefix src/, $(SRCS))
 OBJ = $(SRC:.c=.o)
 
 NAME = libft.a
 
 all : $(NAME)
 
-$(NAME) : $(OBJ)
-	@ar -rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+$(OBJ): %.o: %.c
+	@$(CC) -c $(CFLAGS) $< -o $@
 
-%.o: %.c
-	@$(CC) $(CFLAGS)  $?
+$(NAME) : $(OBJ)
+	@ar rcs $(NAME) $(OBJ)
+	@echo "library compiled"
 
 clean :
 	@rm -f $(OBJ)

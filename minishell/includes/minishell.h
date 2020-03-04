@@ -13,10 +13,11 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
+# include "../libft/includes/libft.h"
 # include <sys/param.h>
-# include "ft_printf.h"
 # include <stdarg.h>
+# include <inttypes.h>  //lin
+# include <stdint.h> 
 
 typedef struct	s_msh
 {
@@ -29,8 +30,7 @@ typedef struct	s_msh
 
 typedef struct s_var
 {
-	char	*name;
-	char	*value;
+	char	*tab[2];
 }				t_var;
 
 typedef struct 	s_builtin

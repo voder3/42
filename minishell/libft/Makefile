@@ -12,9 +12,9 @@
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -c
-
-SRC = ft_atoi.c \
+CFLAGS += -Wall -Wextra -Werror
+CFLAGS += -I includes
+SRCS = ft_atoi.c \
 	ft_bzero.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
@@ -87,21 +87,32 @@ SRC = ft_atoi.c \
 	get_next_line.c \
 	ft_fddel.c \
 	ft_del_tab.c \
-	ft_strcut.c
+	ft_strcut.c	\
+	printf/conv_csp.c	\
+	printf/conv_di.c	\
+	printf/conv_f.c	\
+	printf/conv_negdi.c	\
+	printf/conv_oux.c	\
+	printf/datafs.c	\
+	printf/dispatch.c	\
+	printf/lenm.c	\
+	printf/printf.c	\
+	printf/things.c	\
+	printf/things2.c
 
-
+SRC = $(addprefix src/, $(SRCS))
 OBJ = $(SRC:.c=.o)
 
 NAME = libft.a
 
 all : $(NAME)
 
-$(NAME) : $(OBJ)
-	@ar -rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+$(OBJ): %.o: %.c
+	@$(CC) -c $(CFLAGS) $< -o $@
 
-%.o: %.c
-	@$(CC) $(CFLAGS)  $?
+$(NAME) : $(OBJ)
+	@ar rcs $(NAME) $(OBJ)
+	@echo "library compiled"
 
 clean :
 	@rm -f $(OBJ)

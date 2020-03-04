@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int		cd_home(t_msh *data)
 {
@@ -102,7 +102,7 @@ int             cd_change_directory(t_msh *data, char *curpath, char *opr, char 
         char    *oldpwd;
         char    *error;
 
-        if (!(oldpwd = ft_strdup(ft_getenv(data->envp, "PWD"))))
+        if (!(oldpwd = ft_strdup(ft_getenv(data->env, "PWD"))))
                 if (!(oldpwd = getcwd(NULL, 0)))
                         return (0);
         if (chdir(curpath) == -1)
@@ -113,8 +113,8 @@ int             cd_change_directory(t_msh *data, char *curpath, char *opr, char 
         free(curpath);
         if (!pwd && !(pwd = getcwd(NULL, 0)))
                 return (0);
-        if (!cd_setenv(data->envp, "PWD", pwd)
-        || !cd_setenv(data->envp, "OLDPWD", oldpwd))
+        if (!cd_setenv(data->env, "PWD", pwd)
+        || !cd_setenv(data->env, "OLDPWD", oldpwd))
                 return (0);
         free(oldpwd);
         return (1);

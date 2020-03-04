@@ -10,9 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 #include "dirent.h"
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 static char		*which_path(char *path, char *exec)
 {
