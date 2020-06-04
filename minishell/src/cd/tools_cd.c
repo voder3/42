@@ -6,7 +6,7 @@
 /*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/05 20:54:53 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/03/02 18:55:02 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/04 20:06:50 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char		*ft_strrep(char *str, char *rem, char *rep)
 	ft_strcat(ret, occurence + ft_strlen(rem));
 	return (ret);
 }
-
+/*
 int			ft_isdir(char *path)
 {
 	DIR		*dir;
@@ -64,4 +64,23 @@ int			ft_isdir(char *path)
 		return (1);
 	}
 	return (0);
+}*/
+
+
+int		cd_update_pwd(t_msh *data, char *pwd, char *oldpwd)
+{
+	data->input = (char **)malloc(sizeof(char *) * 5);
+	data->input[1] = ft_strdup("PWD");
+	data->input[2] = ft_strdup(pwd);
+	data->input[3] = ft_strdup("1");
+	data->input[4] = NULL;
+	if (ft_setenv(data))
+		return (0);
+	data->input[1] = ft_strdup("OLDPWD");
+	data->input[2] = ft_strdup(oldpwd);
+	data->input[3] = ft_strdup("1");
+	data->input[4] = NULL;
+	if (ft_setenv(data))
+		return (0);
+	return (1);
 }

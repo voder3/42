@@ -97,23 +97,38 @@ int		ft_stchr(char *str, int c)
 	return (0);
 }
 
-char	*ft_dollar(char *str, t_list *env)
+char	*ft_dollar(char *str, t_list *env, int *len)
 {
 	char	*ret;
 	char	*tmp;
 	int		n;
 
-	n = 1;
-	if (str[1] == '{')
+	n = *len + 1;
+	if (!str[*len + 1])
+	{
+		*len += 2;
+		return (str);
+	}
+	if (str[*len + 1] == '$')
+		return (str[2] ? str + 2 : ft_strnew(0));
+	if ((!(ft_isalnum(str[*len + 1])) &&
+		str[*len + 1] != '{' && str[*len + 1] != '_')) //char specio
+	{
+		*len += 2;
+		return (str);
+	}
+	else if (str[1] == '{')
 	{
 		if (!(n = ft_stchr(str, '}')))
-			return (NULL);
+			return (ft_strnew(0));
 		if (!(ret = ft_strsub(str, 2, n - 2)))
 			return (NULL);
-		if (!(ret = ft_getenvval(env, ret)))
+		if (!(ret = ft_getenvval(env, ret)) && (!(ret = ft_strnew(0))))
 			return (NULL);
+		*len = ft_strlen(ret);
 		if (str[n + 1] && (!(ret = ft_strjoin1(ret, str + n + 1))))
 			return (NULL);
+		n += 1;
 	}
 	else
 	{
@@ -121,42 +136,49 @@ char	*ft_dollar(char *str, t_list *env)
 			n++;
 		if (!(ret = ft_strsub(str, 1, n - 1)))
 			return (NULL);
-		if (!(ret = ft_getenvval(env, ret)))
-		{
-			if (!(ret = ft_strnew(0)))
-				return (NULL);
-		}
-		if (str[n + 1] && (!(ret = ft_strjoin(ret, str + n))))
+		if (!(ret = ft_getenvval(env, ret)) && (!(ret = ft_strnew(0))))
 			return (NULL);
-	}
-	if (str[n] && (n += ft_stchr(str + n - 1, '$')))
-	{
-//		printf("n = %d\nret = %s\nstr = %s\n", n, ret, str + n - 1);
-		if (!(tmp = ft_dollar(str + n - 1 , env)))
-		{
-			if (!(tmp = ft_strnew(0)))
-				return (NULL);
-		}
-		while (ft_isalnum(str[n]) || str[n] == '_')
-			n++;
-		if (!(ret = ft_strsub(ret, 0, ft_stchr(ret, '$'))))
-			return (NULL);
-		if (!(ret = ft_strjoin(ret, tmp)))
+		*len = ft_strlen(ret);
+		if (str[n + 1] && (!(ret = ft_strjoin(ret, str + n))))//si char specio encore
 			return (NULL);
 	}
 	return (ret);
 }
 
-char	*ft_expanstr(char *str, t_list *env)
+char	*ft_dolls(char *str, t_list *env, int *len)
 {
-	if (str[0] == '~' && !(str = (ft_tilde(str, env))))
+	char	*prev;
+	char	*tmp;
+	int	n;
+
+	n = *len;
+	while (str[n] != '$')
+		n++;
+	if (n && !(prev = ft_strsub(str, 0, n)))
 		return (NULL);
-	if (str[0] == '$' && (!(str = ft_dollar(str, env))))
+	if (!(str = ft_dollar(str + n, env, len)))
+		return (NULL);
+	if (n && (!(str = ft_strjoin(prev, str))))
 		return (NULL);
 	return (str);
 }
 
-char	**ft_exp_str(char	**input, t_list *env)
+char	*ft_expanstr(char *str, t_list *env)
+{
+	int 	len;
+
+	len = 0;
+	if (str[0] == '~' && !(str = (ft_tilde(str, env))))
+		return (NULL);
+	while (ft_strchr(str + len, '$'))
+	{
+		if (!(str = ft_dolls(str, env, &len)))
+			return (NULL);
+	}
+	return (str);
+}
+
+char	**ft_exp_str(char **input, t_list *env)
 {
 	int i;
 

@@ -6,60 +6,52 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 16:51:06 by artderva          #+#    #+#             */
-/*   Updated: 2020/03/02 18:56:46 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/04 20:59:11 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "minishell.h"
 #include <stdio.h>
 
-int		yoyo(char *str, t_msh *msh)
+void		minishell(char *str, t_msh *msh)
 {
 	char	**tab;
 	char	*pro;
-	int		i;
 
-	if (!(msh->input = ft_strsplit(str, ' ')))
-		return (0);
-	if (!(msh->path = ft_getenv(msh->env_var, "PATH")))
-		return (0);
-	if (!(msh->input = ft_exp_str(msh->input, msh->env_var))) //exp_str segfot lol
-		return (0);
-//	find_builtin(str, msh);
-	//ft_is_exec(str, msh); //  a faire apres verif des builtine
-	return (0);
+	if (!(msh->input = ft_split(str, " \t")))
+		ft_ex(NULL, "memomy allocation fail");
+	if (!(msh->input[0]))
+		return;
+	if (!(msh->input = ft_exp_str(msh->input, msh->env_var)))
+		ft_ex(NULL, "memomy allocation fail");
+	if (find_builtin(msh) < 0)
+		ft_is_exec(msh);
 }
 
-t_msh	ft_init(char **env)
+void	ft_init(char **env, t_msh *msh)
 {
-	t_msh	msh;
-
-	msh.input = NULL;
-	msh.path = NULL;
-	ft_setenvlist(&msh.env_var, env); // a securiZZZZZZZZZZZ
-	return (msh);
+	msh->input = NULL;
+	msh->envp = env;
+	ft_setenvlist(&msh->env_var, env);
 }
 
 int		main(int ac, char **av, char **env)
 {
 	t_msh	msh;
 	char	*line;
-	int		i;
-	char	*pro;
+	int	i;
 
 	i = 1;
-	ft_printf("COUCOU\n");
-	msh = ft_init(env);
-	ft_putendl("CC");
+	ft_init(env, &msh);
 	while (i)
 	{
-		ft_putstr("VSH> ");
+		ft_putstr("msh> ");
 		if ((i = get_next_line(0, &line)) == -1)
-			return (0);
+			ft_ex(NULL, "memomy allocation fail");
 		if (*line)
-			yoyo(line, &msh);
+			minishell(line, &msh);
 		ft_strdel(&line);
+		// free msh
 	}
-	return 0;
+	return (0);
 }

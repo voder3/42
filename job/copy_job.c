@@ -11,7 +11,10 @@
 /* ************************************************************************** */
 
 #include "exec.h"
-#include "struct.h"
+#include "libft.h"
+#include "sh.h"
+#include <sys/types.h>
+#include <sys/wait.h>
 
 char	**cpy_arr(char	**arr)
 {
@@ -41,7 +44,7 @@ uint8_t		cpy_lst_env(t_var *env, t_var *copy)
 	return (SUCCESS);
 }
 
-uint8_t		cpy_lst_process(t_process *proc, t_process *copy)
+uint8_t		cpy_lst_process(t_process *process, t_process *copy)
 {
 	ft_memcpy(copy, process, sizeof(t_process));
 	if (!(copy->cmd = ft_strdup(process->cmd)))
@@ -63,10 +66,8 @@ uint8_t		cpy_tpipe(t_pipe *pipe, t_pipe *copy)
 	copy->tmp = pipe->tmp;
 }
 
-uint8_t		cpy_job(t_job *job)
+int		cpy_job(t_job *job, t_job *copy)
 {
-	t_job	*copy;
-
 	if (!(copy = (t_job *)malloc(sizeof(t_job) + 1)))
 		return (FAILURE);
 	if (!(copy->command = ft_strdup(job->command)))

@@ -6,12 +6,13 @@
 /*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/05 17:51:38 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/03/02 17:38:11 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/04 19:13:32 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/ft_printf.h"
+
 
 int		cd_oldpwd(t_msh *data)
 {
@@ -58,5 +59,7 @@ int		ft_cd(char **str, t_msh *data)
 
 int		ft_call_cd(t_msh *msh)
 {
+//	ft_printf("a = %\n", msh->input);
+//	ft_printf("b = %\n", msh->input + 1);
 	return (ft_cd(msh->input + 1, msh));
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd_core.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/05 20:47:58 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/03/02 19:02:05 by artderva         ###   ########.fr       */
+/*   Created: 2020/06/04 19:34:35 by artderva          #+#    #+#             */
+/*   Updated: 2020/06/04 19:34:39 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 int		cd_home(t_msh *data)
 {
@@ -96,13 +96,13 @@ int		cd_logically(t_msh *data, char *curpath, char *opr)
 		return (0);
 	return (cd_set_relativepath(data, curpath, opr, pwd));
 }
-
+	
 int             cd_change_directory(t_msh *data, char *curpath, char *opr, char *pwd)
 {
         char    *oldpwd;
         char    *error;
 
-        if (!(oldpwd = ft_strdup(ft_getenv(data->env, "PWD"))))
+        if (!(oldpwd = ft_strdup(ft_getenv(data->env_var, "PWD"))))
                 if (!(oldpwd = getcwd(NULL, 0)))
                         return (0);
         if (chdir(curpath) == -1)
@@ -113,35 +113,8 @@ int             cd_change_directory(t_msh *data, char *curpath, char *opr, char 
         free(curpath);
         if (!pwd && !(pwd = getcwd(NULL, 0)))
                 return (0);
-        if (!cd_setenv(data->env, "PWD", pwd)
-        || !cd_setenv(data->env, "OLDPWD", oldpwd))
-                return (0);
-        free(oldpwd);
+        if (!cd_update_pwd(data, pwd, oldpwd))
+		return (0);
+	free(oldpwd);
         return (1);
 }
-/*
-
-int		cd_change_directory(t_msh *data, char *curpath, char *opr, char *pwd)
-{
-	char	*oldpwd;
-	char	*error;
-	t_list	*lst;
-
-	lst = setenv_find(data->env_var, "PWD");
-	if (lst)
-		oldpwd = ft_strdup(((t_var *)(lst->content))->value);
-	else if (!(oldpwd = getcwd(NULL, 0)))
-		return (0);
-	if (chdir(curpath) == -1)
-	{
-		check_chdir_errors(&error, curpath, opr);
-		return (display_cd_errors(error));
-	}
-	free(curpath);
-	if (!pwd && !(pwd = getcwd(NULL, 0)))
-		return (0);
-	if (!(ft_setenv(data->env_var, "PWD", pwd, 1);
-	ft_setenv(data->env_var, "OLDPWD", oldpwd, 1);
-	free(oldpwd);
-	return (1);
-}*/

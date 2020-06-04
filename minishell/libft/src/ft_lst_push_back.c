@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_lst_push_back.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/04 19:11:26 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/04 19:11:32 by artderva         ###   ########.fr       */
+/*   Created: 2020/06/04 18:55:00 by artderva          #+#    #+#             */
+/*   Updated: 2020/06/04 19:01:42 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int		ft_echo(t_msh *msh)
+void	ft_lst_push_back(t_list **begin, void *content, size_t content_size)
 {
-	int 	i;
-	
-	i = 1;
-	while ((msh->input[i]))
+	t_list	*new;
+	t_list	*tmp;
+
+	tmp = *begin;
+	if (!(new = ft_lstnew(content, content_size)))
+		return ;
+	if (*begin)
 	{
-		ft_putstr(msh->input[i++]);
-		ft_putchar(' ');
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
 	}
-	ft_putchar('\n');
-	return (0);
+	else
+		*begin = new;
 }

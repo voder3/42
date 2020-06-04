@@ -1,40 +1,38 @@
-NAME		:= minishell
-
-CC			:= gcc
-CFLAGS		+= 
-CFLAGS		+= -I includes -I libft/includes
-LDFLAGS		+= -L libft/ -lft
-
-LIBFT		:= libft/libft.a
-
-FILES		:= buitin echo ft_cd ft_cd2 ft_cd_core ft_env
-FILES		:= ft_expanstr ft_which main tools_cd unsetenv
-
-SRC = $(addprefix src/, $(addsuffix .c, $(FILES)))
-OBJ = $(SRC:.c=.o)
-
-.PHONY = all clean fclean re
+NAME		= minishell
+SRC			= src/main.c \
+			src/ft_env.c \
+			src/builtin.c \
+			src/echo.c \
+			src/exit.c \
+			src/unsetenv.c \
+			src/exec.c \
+			src/ft_expanstr.c \
+			src/tools.c \
+			src/cd/chdir_errors.c \
+			src/cd/chdir_errors2.c \
+			src/cd/ft_cd2.c \
+			src/cd/ft_cd.c \
+			src/cd/ft_cd_core.c \
+			src/cd/tools_cd.c
+INC			= includes/
+CC			= gcc
+CFLAGS		= -I $(INC)
+OBJ			= $(SRC:.c=.o)
+LIB			= libft/libft.a
 
 all: $(NAME)
-
-$(LIBFT):
-	@make -C libft
-
-$(OBJ): %.o: %.c
-	@$(CC) -c $(CFLAGS) $< -o $@
-
-$(NAME): $(LIBFT) $(OBJ)
-	@$(CC) $(LDFLAGS) -o $@ $^ libft/libft.a -g
-	@echo "\033[32mCompiled Executable\033[0m"
-
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "[minishell] Compiling [:.]\r"
+$(NAME): $(OBJ)
+	@printf "[minishell] Compiled successfuly! [OK]\n"
+	@gcc $(CFLAGS) $(OBJ) -o $(NAME) -L libft -lft
 clean:
-	@rm -rf $(OBJ)
-	@make -C libft clean
-	@echo "\033[32mRemoved Object Files\033[0m"
-
+	@/bin/rm -f $(OBJ)
+	@printf "[minishell] Removed object files!\n"
 fclean: clean
-	@rm -rf $(NAME)
-	@make -C libft fclean
-	@echo "\033[32mRemoved Executable\033[0m"
-
+	@/bin/rm -f $(NAME)
+	@printf "[minishell] Removed minishell binary!\n"
 re: fclean all
+
+.PHONY: all clean fclean re

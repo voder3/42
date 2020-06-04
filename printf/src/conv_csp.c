@@ -95,9 +95,7 @@ int			ft_prpoi(va_list ap, t_prin fors, char **prin)
 	unsigned long long	n;
 	char				*str;
 	int					lens;
-	char				*nis;
 
-	nis = NULL;
 	n = va_arg(ap, unsigned long long);
 	if (!(str = ft_strjoin2("0x", ft_ulltoa_base(n, "0123456789abcdef"))))
 		return (-1);

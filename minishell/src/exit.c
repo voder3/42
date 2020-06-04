@@ -1,17 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: walden <walden@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/06 19:33:20 by walden          #+#    #+#             */
-/*   Updated: 2020/03/02 17:19:33 by artderva         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 static int		exit_opt(char *s)
 {
@@ -30,8 +18,8 @@ int				ft_exit(t_msh *msh)
 	char	*err_num1;
 	char	*err_num2;
 
-	err_arg = "exit\nMSH: exit: too many arguments\n";
-	err_num1 = "exit\nMSH: exit: ";
+	err_arg = "exit\nmsh: exit: too many arguments\n";
+	err_num1 = "exit\nmsh: exit: ";
 	err_num2= ": numeric argument required\n";
 	if (msh->input[1])
 	{
@@ -40,14 +28,13 @@ int				ft_exit(t_msh *msh)
 			ft_putstr_fd(err_num1, 2);
 			ft_putstr_fd(msh->input[1], 2);
 			ft_putstr_fd(err_num2, 2);
-			exit(255);
+			exit(EXIT_SUCCESS);
 		}
 		if (msh->input[2])
 		{
 			ft_putstr_fd(err_arg, 2);
 			return (1);
 		}
-		msh->lr = ft_atoi(msh->input[1]);
 	}
-	exit(msh->lr);
+	exit(EXIT_SUCCESS);
 }

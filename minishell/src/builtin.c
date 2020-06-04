@@ -12,45 +12,19 @@
 
 #include "minishell.h"
 
-int		ft_built(int i, t_msh *msh)
+int		find_builtin(t_msh *msh)
 {
-	int(*ft_bbbtin[6])(t_msh *);
-
-	ft_bbbtin[0] = &ft_echo;
-//	ft_bbbtin[1] = &ft_call_cd;
-//	ft_bbbtin[2] = &ft_call_setenv;
-//	ft_bbbtin[3] = &ft_unsetenv;
-//	ft_bbbtin[4] = &ft_env;
-//	ft_bbbtin[5] = &ft_exit;
-	return (ft_bbbtin[i](msh));
+	if (!(ft_strcmp(msh->input[0], "echo")))
+		return (ft_echo(msh));
+	else if (!(ft_strcmp(msh->input[0], "cd")))
+		return (ft_call_cd(msh));
+	else if (!(ft_strcmp(msh->input[0], "setenv")))
+		return (ft_setenv(msh));
+	else if (!(ft_strcmp(msh->input[0], "unsetenv")))
+		return (ft_unsetenv(msh));
+	else if (!(ft_strcmp(msh->input[0], "env")))
+		return (ft_env(msh));
+	else if (!(ft_strcmp(msh->input[0], "exit")))
+		return (ft_exit(msh));
+	return (-1);	
 }
-
-int		find_builtin(char *str, t_msh *msh)
-{
-	char	*buil[6];
-	int		i;
-	pid_t	pid;
-
-	i = 0;
-	buil[0] = "echo";
-	buil[1] = "cd";
-	buil[2] = "setenv";
-	buil[3] = "unsetenv";
-	buil[4] = "env";
-	buil[5] = "exit";
-
-	while (i < 6)
-	{
-		if (!(ft_strcmp(msh->input[0], buil[i])))
-		{
-			ft_built(i, msh);
-		}
-		i++;
-	}
-	return (i);
-}
-
-//int		ft_is_built(char *str, t_msh *msh)
-//{
-//	
-//}

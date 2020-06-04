@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:05 by artderva          #+#    #+#             */
-/*   Updated: 2020/03/02 19:18:37 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/04 20:40:38 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,52 +26,6 @@ char	*ft_getenv(t_list *env, char *name)
 	return (res);
 }
 
-/*t_env   *ft_setenvlist(char **env)
-{
-	int             i;
-	t_env   *ret;
-	t_env   *tmp;
-	t_env   *new;
-	i = 0;
-	if (env[i] && !(ret = malloc(sizeof(t_env))))
-		return (0);
-	tmp = ret;
-	tmp->name = ft_strcut(env[i], "=", 1);
-	tmp->value = ft_strcut(env[i], "=", 2);
-	tmp->next = NULL;
-	i++;
-	while (env[i])
-	{
-		if (!(new = malloc(sizeof(t_env))))
-			return (0);
-		new->name = ft_strcut(env[i], "=", 1);
-		new->value = ft_strcut(env[i], "=", 2);
-		new->next = NULL;
-		tmp->next = new;
-		tmp = tmp->next;
-		i++;
-	}
-	return (ret);
-} */
-
-void	ft_lst_push_back(t_list **begin, void *content, size_t content_size)
-{
-	t_list	*new;
-	t_list	*tmp;
-
-	tmp = *begin;
-	if (!(new = ft_lstnew(content, content_size)))
-		return ;
-	if (*begin)
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-	else
-		*begin = new;
-}
-
 int		ft_setenvlist(t_list **list, char **envp)
 {
 	int		i;
@@ -81,8 +35,10 @@ int		ft_setenvlist(t_list **list, char **envp)
 	*list = NULL;
 	while (envp[i])
 	{
-		env.tab[0] = ft_strcut(envp[i], "=", 1);
-		env.tab[1] = ft_strcut(envp[i], "=", 2);
+		if (!(env.tab[0] = ft_strcut(envp[i], "=", 1)))
+			ft_ex(NULL, "memomy allocation fail");
+		if (!(env.tab[1] = ft_strcut(envp[i], "=", 2)))
+			ft_ex(NULL, "memomy allocation fail");
 		ft_lst_push_back(list, &env, sizeof(t_var));
 		i++;
 	}
@@ -100,25 +56,54 @@ char	*ft_strjnlst(char *s1, char *s2)
 	return (str);
 }
 
-/*char	**ft_unsetenvlist(t_env *env)
+void    ft_print_env(t_list *env)
 {
-	char	**tab;
-	int		n;
-	int		j;
-
-	n = 0;
-	while (env && n++)
-		env = env->next;
-	if (!(tab = (char**)malloc(sizeof(char *) * n + 1)))
-		return (NULL);
-	n = 0;
 	while (env)
 	{
-		if (!(tab[n] = ft_strjnlst(env->name, env->value)))
-			return (NULL);
+		ft_printf("%s=%s\n", ((t_var *)(env->content))->tab[0],
+		((t_var *)(env->content))->tab[1]);
 		env = env->next;
-		n++;
 	}
-	tab[n] = NULL;
-	return (tab);
-}*/
+}
+
+int	ft_setenv(t_msh *msh)
+{
+	t_list	*lst;
+	t_var	env;
+	int	overw;
+
+	if (!msh->input[1]  || !msh->input[2])
+	{
+		ft_printf("setenv: wrong options\n");
+		return (1);
+	}
+	env.tab[0] = ft_strdup(msh->input[1]);
+	env.tab[1] = ft_strdup(msh->input[2]); // leak
+	overw = 0;
+	if (msh->input[3])
+		overw = ft_atoi(msh->input[3]);
+	lst = msh->env_var;
+	while (lst)
+	{
+		if (!(ft_strcmp(env.tab[0], ((t_var *)(lst->content))->tab[0])))
+		{
+			if (overw)
+				((t_var *)(lst->content))->tab[1] = env.tab[1];
+			break;
+		}
+		if (!lst->next)
+			ft_lst_push_back(&lst, &env, sizeof(t_var));
+		lst = lst->next;
+	}
+	// free env??
+//	ft_strdel(&env.tab[0]);
+//	ft_strdel(&env.tab[1]);
+
+	return (0);
+}
+
+int	ft_env(t_msh *msh)
+{
+	ft_print_env(msh->env_var);
+	return (0);
+}

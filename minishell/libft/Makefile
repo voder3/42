@@ -6,7 +6,7 @@
 #    By: artderva <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/15 18:05:08 by artderva          #+#    #+#              #
-#    Updated: 2020/03/02 19:10:25 by artderva         ###   ########.fr        #
+#    Updated: 2020/06/04 18:58:01 by artderva         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,6 +61,7 @@ SRCS = ft_atoi.c \
 	ft_strnstr.c \
 	ft_strrchr.c \
 	ft_strsplit.c \
+	ft_split.c \
 	ft_strstr.c \
 	ft_strsub.c \
 	ft_strtrim.c \
@@ -98,7 +99,8 @@ SRCS = ft_atoi.c \
 	printf/lenm.c	\
 	printf/printf.c	\
 	printf/things.c	\
-	printf/things2.c
+	printf/things2.c \
+	ft_lst_push_back.c
 
 SRC = $(addprefix src/, $(SRCS))
 OBJ = $(SRC:.c=.o)

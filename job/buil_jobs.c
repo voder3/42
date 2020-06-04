@@ -58,7 +58,9 @@ int		print_jobs(t_list *list)
 {
 	t_job	*job;
 	char	*state;
+	int	job_num;
 
+	job_num = 1;
 	state = NULL;
 	while (list)
 	{
@@ -75,11 +77,14 @@ int		print_jobs(t_list *list)
 }
 
 
-int		ft_jobs(t_cfg *shell) //, t_process *process)
+int8_t		ft_jobs(t_cfg *shell, t_process *process)
 {
-	int		opt;
+	int8_t		opt;
+	int8_t		i;
 
-	if (!(opt = ft_getopt(??, &, ,"")));
+	if (!(opt = ft_getopt(&av, &i, process->av, "lp")))
+		return (FAILURE);
+		
 	print_jobs(shell->job);
 	return (0);
 }

@@ -6,7 +6,7 @@ int			display_cd_errors(char *error)
 		return (0);
 	ft_printf("minishell: cd: %s", error);
 	free(error);
-	return (-1);
+	return (1);
 }
 
 int			check_enametoolong(char *path)
