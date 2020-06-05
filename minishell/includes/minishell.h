@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:58 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/05 16:12:42 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/05 21:54:13 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,8 @@ int			ft_call_cd(t_msh *msh);
 int			find_builtin(t_msh *msh);
 int			ft_error(char *s1, char *s2);
 void			ft_ex(char *s1, char *s2);
-//char			*brackets_dol(char *str, int *n, int *len);
 char			*ft_getenvval(t_list *env, char *str);
 char			*ft_dolls(char *str, t_list *env, int *len);
-
-/*  cd   */
 
 int			ft_cd(char **str, t_msh *data);
 char			cd_getopt(char **str, int *i);
@@ -59,7 +56,6 @@ char			*cd_setcurpath(t_msh *data, char *opr);
 int			cd_logically(t_msh *data, char *curpath, char *opr);
 int			cd_change_directory(t_msh *data, char *curpath, char *opr, char *pwd);
 
-int			ft_isdir(char *path);
 char			*ft_strrep(char *str, char *rem, char *rep);
 char			*ft_pathjoin(char *s1, char *s2);
 int			cd_update_pwd(t_msh *data, char *pwd, char *oldpwd);
@@ -69,5 +65,10 @@ char			*cd_del_dotcomponents(char *curpath, char *opr);
 int			check_chdir_errors(char **str, char *path, char *opr);
 int			check_whole_path(char *path);
 int			display_cd_errors(char *error);
+
+void			free_struct(t_msh *data);
+void			del_struct_tvar(void *del, size_t u);
+int			ft_isdir(char *path);
+int			is_file(char *path, char *str);
 
 #endif

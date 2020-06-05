@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 18:31:47 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/05 18:31:49 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/05 21:55:51 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,47 +28,6 @@ static char	*which_path(char *path, char *exec)
 	return (dst);
 }
 
-int		ft_isdir(char *path)
-{
-	DIR		*dir;
-
-	if (!path)
-		return (0);
-	if ((dir = opendir(path)))
-	{
-		closedir(dir);
-		return (1);
-	}
-	return (0);
-}
-
-int		is_file(char *path, char *str)
-{
-	DIR			*dir;
-	struct dirent		*dit;
-	int				ret;
-	char			*name;
-
-	ret = 0;
-	if (!*str)
-		return (0);
-	if (*str == '/')
-		*str = '\0';
-	name = *str ? str : str + 1;
-	if (!(dir = opendir(path)))
-	{
-		*str = *str ? *str : '/';
-		return (0);
-	}
-	while (!ret && (dit = readdir(dir)))
-		if (!ft_strcmp(dit->d_name, name))
-			ret = 1;
-	closedir(dir);
-	*str = *str ? *str : '/';
-	return (ret);
-}
-
-
 char		*absolute_path(char *exec)
 {
 	if (ft_isdir(exec))
@@ -85,7 +44,7 @@ char		*ft_which(char *paths, char *exec)
 	struct dirent	*file;
 	char		**tab;
 	DIR		*dir;
-	int		i;
+	int			i;
 
 	i = -1;
 	if (ft_strchr(exec, '/'))
@@ -134,7 +93,7 @@ char		**env_to_tab(t_list *env)
 	return (arr);
 }
 
-int		ft_is_exec(t_msh *msh)
+int			ft_is_exec(t_msh *msh)
 {
 	char		*exec;
 	pid_t		pid;

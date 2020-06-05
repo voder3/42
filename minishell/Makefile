@@ -6,6 +6,7 @@ SRC			= src/main.c \
 			src/exit.c \
 			src/unsetenv.c \
 			src/exec.c \
+			src/tools_exec.c \
 			src/ft_expanstr.c \
 			src/exp_dollar.c \
 			src/tools.c \

@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 19:11:26 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/04 19:11:32 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/05 21:48:05 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int		ft_echo(t_msh *msh)
 {
-	int 	i;
-	
+	int	i;
+
 	i = 1;
 	while ((msh->input[i]))
 	{
