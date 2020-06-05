@@ -1,4 +1,4 @@
-NAME		= minishell
+NAME			= minishell
 SRC			= src/main.c \
 			src/ft_env.c \
 			src/builtin.c \
@@ -7,6 +7,7 @@ SRC			= src/main.c \
 			src/unsetenv.c \
 			src/exec.c \
 			src/ft_expanstr.c \
+			src/exp_dollar.c \
 			src/tools.c \
 			src/cd/chdir_errors.c \
 			src/cd/chdir_errors2.c \
@@ -16,7 +17,7 @@ SRC			= src/main.c \
 			src/cd/tools_cd.c
 INC			= includes/
 CC			= gcc
-CFLAGS		= -I $(INC)
+CFLAGS			= -I $(INC)
 OBJ			= $(SRC:.c=.o)
 LIB			= libft/libft.a
 

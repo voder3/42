@@ -6,14 +6,14 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 16:51:06 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/04 20:59:11 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/05 17:42:50 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdio.h>
 
-void		minishell(char *str, t_msh *msh)
+void	minishell(char *str, t_msh *msh)
 {
 	char	**tab;
 	char	*pro;
@@ -21,7 +21,7 @@ void		minishell(char *str, t_msh *msh)
 	if (!(msh->input = ft_split(str, " \t")))
 		ft_ex(NULL, "memomy allocation fail");
 	if (!(msh->input[0]))
-		return;
+		return ;
 	if (!(msh->input = ft_exp_str(msh->input, msh->env_var)))
 		ft_ex(NULL, "memomy allocation fail");
 	if (find_builtin(msh) < 0)
@@ -39,7 +39,7 @@ int		main(int ac, char **av, char **env)
 {
 	t_msh	msh;
 	char	*line;
-	int	i;
+	int		i;
 
 	i = 1;
 	ft_init(env, &msh);

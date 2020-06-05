@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/05 17:51:38 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/06/04 19:13:32 by artderva         ###   ########.fr       */
+/*   Created: 2020/06/04 23:55:20 by artderva          #+#    #+#             */
+/*   Updated: 2020/06/04 23:55:36 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/ft_printf.h"
-
 
 int		cd_oldpwd(t_msh *data)
 {
@@ -22,12 +21,9 @@ int		cd_oldpwd(t_msh *data)
 
 	oldpwd = ft_getenv(data->env_var, "OLDPWD");
 	if (!oldpwd || !*oldpwd)
-	{
-		ft_printf("minishell: cd: OLDPWD not set\n");
-		return (-1);
-	}
+		return (ft_error(NULL, "cd: OLDPWD not set"));
 	if (!(str = (char**)malloc(sizeof(char*) * 2)))
-		return (0);
+		return (ft_error(NULL, "memory allocation failed"));
 	str[0] = oldpwd;
 	str[1] = NULL;
 	ret = ft_cd(str, data);
@@ -44,7 +40,7 @@ int		ft_cd(char **str, t_msh *data)
 
 	i = 0;
 	if (!(opt = cd_getopt(str, &i)))
-		return (-1);
+		return (0);
 	opr = str[i];
 	if (!opr)
 		return (cd_home(data));
@@ -59,7 +55,5 @@ int		ft_cd(char **str, t_msh *data)
 
 int		ft_call_cd(t_msh *msh)
 {
-//	ft_printf("a = %\n", msh->input);
-//	ft_printf("b = %\n", msh->input + 1);
 	return (ft_cd(msh->input + 1, msh));
 }

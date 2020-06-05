@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:58 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/04 20:49:15 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/05 16:12:42 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ int			ft_call_cd(t_msh *msh);
 int			find_builtin(t_msh *msh);
 int			ft_error(char *s1, char *s2);
 void			ft_ex(char *s1, char *s2);
+//char			*brackets_dol(char *str, int *n, int *len);
+char			*ft_getenvval(t_list *env, char *str);
+char			*ft_dolls(char *str, t_list *env, int *len);
 
 /*  cd   */
 
@@ -67,5 +70,4 @@ int			check_chdir_errors(char **str, char *path, char *opr);
 int			check_whole_path(char *path);
 int			display_cd_errors(char *error);
 
-//char			*ft_getenv2(t_list *env, char *name);
 #endif

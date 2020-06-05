@@ -1,12 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unsetenv.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/05 17:45:02 by artderva          #+#    #+#             */
+/*   Updated: 2020/06/05 17:45:58 by artderva         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int			ft_unsetenv(t_msh *msh)
+int		ft_unsetenv(t_msh *msh)
 {
 	t_list	*env;
-	t_list 	*prev;
+	t_list	*prev;
 
 	env = msh->env_var;
 	prev = NULL;
+	if (!msh->input[1])
+		return (ft_error(NULL, "unsetenv: wrong options"));
 	while (env)
 	{
 		if (!ft_strcmp(msh->input[1], (((t_var *)(env->content))->tab[0])))
@@ -22,8 +36,24 @@ int			ft_unsetenv(t_msh *msh)
 		prev = env;
 		env = env->next;
 	}
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(msh->input[1], 2);
-	ft_putendl_fd(": no environment variable", 2);
+	return (ft_error(msh->input[1], ": no environment variable"));
+}
+
+int		ft_setenvlist(t_list **list, char **envp)
+{
+	int		i;
+	t_var	env;
+
+	i = 0;
+	*list = NULL;
+	while (envp[i])
+	{
+		if (!(env.tab[0] = ft_strcut(envp[i], "=", 1)))
+			ft_ex(NULL, "memomy allocation fail");
+		if (!(env.tab[1] = ft_strcut(envp[i], "=", 2)))
+			ft_ex(NULL, "memomy allocation fail");
+		ft_lst_push_back(list, &env, sizeof(t_var));
+		i++;
+	}
 	return (1);
 }

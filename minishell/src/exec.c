@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/05 18:31:47 by artderva          #+#    #+#             */
+/*   Updated: 2020/06/05 18:31:49 by artderva         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "dirent.h"
 #include <stdio.h>
@@ -8,7 +20,8 @@ static char	*which_path(char *path, char *exec)
 {
 	char	*dst;
 
-	dst = ft_strnew(ft_strlen(path) + ft_strlen(exec) + 1);
+	if (!(dst = ft_strnew(ft_strlen(path) + ft_strlen(exec) + 1)))
+		ft_ex(NULL, "memory allocation failed");
 	ft_strcat(dst, path);
 	ft_strcat(dst, "/");
 	ft_strcat(dst, exec);
@@ -33,7 +46,7 @@ int		is_file(char *path, char *str)
 {
 	DIR			*dir;
 	struct dirent		*dit;
-	int			ret;
+	int				ret;
 	char			*name;
 
 	ret = 0;
@@ -59,11 +72,11 @@ int		is_file(char *path, char *str)
 char		*absolute_path(char *exec)
 {
 	if (ft_isdir(exec))
-		ft_printf("msh: %s: Is a directory\n", exec);
+		ft_error(exec, ": Is a directory");
 	else if (is_file(exec, ft_strrchr(exec, '/')))
 		return (exec);
 	else
-		ft_printf("msh: %s: No such file or directory\n", exec);
+		ft_error(exec, ": No such file or directory");
 	return (NULL);
 }
 
@@ -77,7 +90,7 @@ char		*ft_which(char *paths, char *exec)
 	i = -1;
 	if (ft_strchr(exec, '/'))
 		return (absolute_path(exec));
-	if (!(paths && exec && (tab = ft_strsplit(paths, ':')))) //a modif
+	if (!(paths && exec && (tab = ft_strsplit(paths, ':'))))
 		return (NULL);
 	while (tab[++i])
 	{
@@ -90,7 +103,7 @@ char		*ft_which(char *paths, char *exec)
 		if (file)
 			return (which_path(tab[i], exec));
 	}
-	ft_printf("msh: %s: command not found\n", exec);
+	ft_error(exec, ": command not found");
 	return (NULL);
 }
 
@@ -98,7 +111,7 @@ char		**env_to_tab(t_list *env)
 {
 	char		**arr;
 	t_list		*cpy;
-	int		i;
+	int			i;
 
 	i = 0;
 	cpy = env;
@@ -125,23 +138,23 @@ int		ft_is_exec(t_msh *msh)
 {
 	char		*exec;
 	pid_t		pid;
-	int		status;
+	int			status;
 	char		*path;
 
 	path = ft_getenv(msh->env_var, "PATH");
 	if ((exec = ft_which(path, msh->input[0])) == NULL)
-		return 0;
+		return (0);
 	else
 	{
 		msh->envp = env_to_tab(msh->env_var);
 		pid = fork();
 		if (pid == 0)
 			if (execve(exec, msh->input, msh->envp) == -1)
-				return 0;
+				return (ft_error(NULL, "execution failed"));
 		if (pid == -1)
-			ft_ex(NULL, "fork fail");
+			ft_ex(NULL, "fork failed");
 		else
 			wait(&status);
 	}
-	return 0;
+	return (0);
 }

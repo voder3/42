@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   chdir_errors.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/04 23:55:50 by artderva          #+#    #+#             */
+/*   Updated: 2020/06/05 00:00:16 by artderva         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int			display_cd_errors(char *error)
 {
 	if (!(error))
 		return (0);
-	ft_printf("minishell: cd: %s", error);
+	ft_error("cd :", error);
 	free(error);
 	return (1);
 }
@@ -48,7 +60,7 @@ int			check_chdir_errors(char **error, char *path, char *opr)
 	if (ret == 1)
 		*error = (ft_strjoin(opr, ": No such file or directory\n"));
 	if (ret == 2)
-		*error = (ft_strjoin(opr, ": Too many levels of symbolic links\n"));
+		*error = (ft_strjoin(opr, ": Symbolic links error\n"));
 	if (ret == 3)
 		*error = (ft_strjoin(opr, ": Not a directory\n"));
 	if (ret == 4)

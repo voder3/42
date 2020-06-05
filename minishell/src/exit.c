@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/06/05 16:46:50 by artderva          #+#    #+#             */
+/*   Updated: 2020/06/05 16:47:33 by artderva         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 static int		exit_opt(char *s)
 {
@@ -20,7 +31,7 @@ int				ft_exit(t_msh *msh)
 
 	err_arg = "exit\nmsh: exit: too many arguments\n";
 	err_num1 = "exit\nmsh: exit: ";
-	err_num2= ": numeric argument required\n";
+	err_num2 = ": numeric argument required\n";
 	if (msh->input[1])
 	{
 		if (exit_opt(msh->input[1]))

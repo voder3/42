@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 19:34:35 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/04 19:34:39 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/05 18:29:40 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,9 @@ int		cd_home(t_msh *data)
 
 	home = ft_getenv(data->env_var, "HOME");
 	if (!home)
-	{
-		ft_printf("minishell: cd: HOME not set\n");
-		return (-1);
-	}
+		return (ft_error(NULL, "cd: HOME not set"));
 	if (!(str = (char**)malloc(sizeof(char*) * 2)))
-		return (0);
+		ft_ex(NULL, "memory allocation failed");
 	str[0] = home;
 	str[1] = NULL;
 	ret = ft_cd(str, data);
@@ -85,36 +82,37 @@ int		cd_logically(t_msh *data, char *curpath, char *opr)
 
 	if (!(pwd = ft_strdup(ft_getenv(data->env_var, "PWD"))))
 		if (!(pwd = getcwd(NULL, 0)))
-			return (0);
+			ft_ex(NULL, "memory allocation failed");
 	if (*curpath != '/')
 	{
 		tmp = curpath;
-		curpath = ft_pathjoin(pwd, curpath);
+		if (!(curpath = ft_pathjoin(pwd, curpath)))
+			ft_ex(NULL, "memory allocation failed");
 		free(tmp);
 	}
 	if (!(curpath = cd_del_dotcomponents(curpath, opr)))
-		return (0);
+		ft_ex(NULL, "memory allocation failed");
 	return (cd_set_relativepath(data, curpath, opr, pwd));
 }
-	
-int             cd_change_directory(t_msh *data, char *curpath, char *opr, char *pwd)
-{
-        char    *oldpwd;
-        char    *error;
 
-        if (!(oldpwd = ft_strdup(ft_getenv(data->env_var, "PWD"))))
-                if (!(oldpwd = getcwd(NULL, 0)))
-                        return (0);
-        if (chdir(curpath) == -1)
-        {
-                check_chdir_errors(&error, curpath, opr);
-                return (display_cd_errors(error));
-        }
-        free(curpath);
-        if (!pwd && !(pwd = getcwd(NULL, 0)))
-                return (0);
-        if (!cd_update_pwd(data, pwd, oldpwd))
-		return (0);
+int		cd_change_directory(t_msh *data, char *curpath, char *opr, char *pwd)
+{
+	char	*oldpwd;
+	char	*error;
+
+	if (!(oldpwd = ft_strdup(ft_getenv(data->env_var, "PWD"))))
+		if (!(oldpwd = getcwd(NULL, 0)))
+			ft_ex(NULL, "memory allocation failed");
+	if (chdir(curpath) == -1)
+	{
+		check_chdir_errors(&error, curpath, opr);
+		return (display_cd_errors(error));
+	}
+	free(curpath);
+	if (!pwd && !(pwd = getcwd(NULL, 0)))
+		ft_ex(NULL, "memory allocation failed");
+	if (!cd_update_pwd(data, pwd, oldpwd))
+		ft_ex(NULL, "memory allocation failed");
 	free(oldpwd);
-        return (1);
+	return (1);
 }

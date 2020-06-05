@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/05 20:45:58 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/01/22 17:58:09 by artderva         ###   ########.fr       */
+/*   Created: 2020/06/04 23:55:01 by artderva          #+#    #+#             */
+/*   Updated: 2020/06/04 23:55:05 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ char			cd_getopt(char **str, int *i)
 			opt = str[a][1];
 		else if (str[a][1] != '-' || (str[a][1] == '-' && str[a][2]))
 		{
-			ft_printf("minishell: cd: -%c: invalid option\n",
-			str[a][1]);
-			ft_printf("cd: usage: cd [-L|-P] [dir]\n");
+			ft_putstr_fd("minishell: cd: -", 2);
+			ft_putchar_fd(str[a][1], 2);
+			ft_putendl_fd(": invalid option", 2);
+			ft_putendl_fd("Usage: cd [-L|-P] [dir]", 2);
 			return (0);
 		}
 		if (str[a][1] == '-')
@@ -72,7 +73,7 @@ static char		*ft_del_dotdots2(char *curpath, int i)
 	if (!ft_strncmp(curpath, "/..", 3))
 		return (ft_strrep(curpath, "..", NULL));
 	if (!(tmp = ft_strdup(curpath)))
-		return (0);
+		ft_ex(NULL, "memory allocation failed");
 	tmp[i - 1] = '\0';
 	tmp2 = ft_strrchr(tmp, '/') + 1;
 	tmp[i - 1] = '/';
