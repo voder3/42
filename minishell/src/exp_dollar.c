@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 17:21:30 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/05 18:36:05 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 19:33:21 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,15 @@ char	*reg_dol(char *str, int n, int *len, t_list *env)
 			ft_ex(NULL, "memory allocation failed");
 	}
 	*len = ft_strlen(ret);
-	if (str[n + 1] && (!(ret = ft_strjoin(ret, str + n))))
+	if (str[n] && (!(ret = ft_strjoin(ret, str + n))))
 		ft_ex(NULL, "memory allocation failed");
+	ft_strdel(&str);
 	return (ret);
 }
 
 char	*ft_dollar(char *str, t_list *env, int *len)
 {
 	char	*ret;
-	char	*tmp;
 	int		n;
 
 	n = 1;
@@ -92,13 +92,13 @@ char	*ft_dollar(char *str, t_list *env, int *len)
 		ret = brackets_dol(str, &n, len, env);
 	else
 		ret = reg_dol(str, n, len, env);
+//	ft_strdel(&str);
 	return (ret);
 }
 
 char	*ft_dolls(char *str, t_list *env, int *len)
 {
 	char	*prev;
-	char	*tmp;
 	int		n;
 
 	n = *len;
@@ -108,7 +108,7 @@ char	*ft_dolls(char *str, t_list *env, int *len)
 		ft_ex(NULL, "memory allocation failed");
 	if (!(str = ft_dollar(str + n, env, len)))
 		ft_ex(NULL, "memory allocation failed");
-	if (n && (!(str = ft_strjoin(prev, str))))
+	if (n && (!(str = ft_strjoin1(prev, str))))
 		ft_ex(NULL, "memory allocation failed");
 	return (str);
 }

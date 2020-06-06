@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 16:51:06 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/06 17:42:40 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 18:36:21 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	minishell(char *str, t_msh *msh)
 void	ft_init(char **env, t_msh *msh)
 {
 	msh->input = NULL;
-	msh->envp = env;
 	ft_setenvlist(&msh->env_var, env);
 }
 
@@ -48,10 +47,11 @@ int		main(int ac, char **av, char **env)
 	{
 		ft_putstr("msh> ");
 		if ((i = get_next_line(0, &line)) == -1)
-			ft_ex(NULL, "memomy allocation fail");
+			ft_ex(NULL, "memomy allocation failed");
 		if (*line)
 			minishell(line, &msh);
 		ft_strdel(&line);
+		free_struct(&msh);
 	}
 	return (0);
 }

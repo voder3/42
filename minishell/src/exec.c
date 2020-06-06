@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 18:31:47 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/06 17:41:47 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 18:33:04 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static char	*which_path(char *path, char *exec)
 	ft_strcat(dst, path);
 	ft_strcat(dst, "/");
 	ft_strcat(dst, exec);
+	ft_strdel(&path);
 	return (dst);
 }
 
@@ -60,9 +61,14 @@ char		*ft_which(char *paths, char *exec)
 				break ;
 		closedir(dir);
 		if (file)
-			return (which_path(tab[i], exec));
+		{	
+			paths = ft_strdup(tab[i]);
+			ft_del_tab((void **)tab);
+			return (which_path(paths, exec));
+		}
 	}
 	ft_error(exec, ": command not found");
+	ft_del_tab((void **)tab);
 	return (NULL);
 }
 
@@ -85,7 +91,7 @@ char		**env_to_tab(t_list *env)
 	while (env)
 	{
 		arr[i] = ft_strjoin(((t_var*)(env->content))->tab[0], "=");
-		arr[i] = ft_strjoin(arr[i], ((t_var*)(env->content))->tab[1]);
+		arr[i] = ft_strjoin1(arr[i], ((t_var*)(env->content))->tab[1]);
 		env = env->next;
 		i++;
 	}
@@ -99,21 +105,24 @@ int			ft_is_exec(t_msh *msh)
 	pid_t		pid;
 	int			status;
 	char		*path;
+	char		**env;
 
 	path = ft_getenv(msh->env_var, "PATH");
 	if ((exec = ft_which(path, msh->input[0])) == NULL)
 		return (0);
 	else
 	{
-		msh->envp = env_to_tab(msh->env_var);
+		env = env_to_tab(msh->env_var);
 		pid = fork();
 		if (pid == 0)
-			if (execve(exec, msh->input, msh->envp) == -1)
+			if (execve(exec, msh->input, env) == -1)
 				return (ft_error(NULL, "execution failed"));
 		if (pid == -1)
 			ft_ex(NULL, "fork failed");
 		else
 			wait(&status);
 	}
+	ft_strdel(&exec);
+	ft_del_tab((void **)env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/04 20:08:24 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/05 21:40:56 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 18:37:19 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	del_struct_tvar(void *del, size_t u)
 
 	(void)u;
 	v = del;
-//	ft_del_tab((void **)v->tab);
 	free((void **)v->tab[0]);
 	free((void **)v->tab[1]);
 	free(v);
@@ -45,6 +44,4 @@ void	del_struct_tvar(void *del, size_t u)
 void	free_struct(t_msh *data)
 {
 	ft_del_tab((void **)data->input);
-//	ft_del_tab((void **)data->envp);
-	ft_lstdel(&data->env_var, del_struct_tvar);
 }

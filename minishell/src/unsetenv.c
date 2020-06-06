@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 17:45:02 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/06 17:50:36 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 20:02:36 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,15 @@ int		ft_unsetenv(t_msh *msh)
 				msh->env_var = env->next;
 			else
 				prev->next = env->next;
+			free(((t_var *)(env->content))->tab[0]);
+			free(((t_var *)(env->content))->tab[1]);
+			free(((t_var *)(env->content))->tab);
 			free(env);
-			//ft_lstdel(&env, del_struct_tvar);
 			return (0);
 		}
 		prev = env;
 		env = env->next;
 	}
-	ft_lstdel(&env, del_struct_tvar);
 	return (ft_error(msh->input[1], ": no environment variable"));
 }
 

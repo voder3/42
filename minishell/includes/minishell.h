@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:58 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/05 21:54:13 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 18:04:34 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@
 # include "../libft/includes/libft.h"
 # include <sys/param.h>
 # include <stdarg.h>
-# include <inttypes.h>  //lin
+# include <inttypes.h>
 # include <stdint.h> 
 
 typedef struct	s_msh
 {
 	char	**input;
-	char	**envp;
 	t_list	*env_var;
 }			t_msh;
 
