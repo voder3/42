@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 16:31:15 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/06 00:07:23 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 17:28:50 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char		**ft_strsplit(char const *s, char c)
 		if (s[i])
 		{
 			k = 0;
-			if (!(tab[j] = (char *)malloc(sizeof(char) * (ft_lw(s, i, c) + 1))))
+			if (!(tab[j] = (char *)malloc(sizeof(char) * ft_lw(s, i, c) + 1)))
 				return (NULL);
 			while (s[i] != c && s[i])
 				tab[j][k++] = s[i++];

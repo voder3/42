@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 18:31:47 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/06 16:26:48 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 17:41:47 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,5 @@ int			ft_is_exec(t_msh *msh)
 		else
 			wait(&status);
 	}
-//	ft_strdel(&path);
-//	ft_strdel(&exec);
 	return (0);
 }
