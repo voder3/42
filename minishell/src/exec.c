@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 18:31:47 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/05 21:55:51 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 16:26:48 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char		**env_to_tab(t_list *env)
 		i++;
 		cpy = cpy->next;
 	}
-	if (!(arr = (char **)malloc(sizeof(char *) * i + 1)))
+	if (!(arr = (char **)malloc(sizeof(char *) * (i + 1))))
 		return (NULL);
 	i = 0;
 	while (env)
@@ -115,5 +115,7 @@ int			ft_is_exec(t_msh *msh)
 		else
 			wait(&status);
 	}
+//	ft_strdel(&path);
+//	ft_strdel(&exec);
 	return (0);
 }

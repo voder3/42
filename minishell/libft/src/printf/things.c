@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/30 19:30:25 by artderva          #+#    #+#             */
-/*   Updated: 2019/05/21 18:06:35 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 17:05:13 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*ft_strndup(char *src, int n)
 
 	i = -1;
 	len = (int)ft_strlen(src) > n ? n : (int)ft_strlen(src);
-	if (!(dup = ft_strnew(len)))
+	if (!(dup = ft_strnew(len + 1)))
 		return (NULL);
 	while (src[++i] && len)
 	{

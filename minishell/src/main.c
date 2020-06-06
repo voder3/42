@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 16:51:06 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/05 21:46:35 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/06 00:14:40 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int		main(int ac, char **av, char **env)
 	int		i;
 
 	i = 1;
+	line = NULL;
 	ft_init(env, &msh);
 	while (i)
 	{

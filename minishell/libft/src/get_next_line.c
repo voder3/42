@@ -5,99 +5,97 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/04 18:42:20 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/04 18:42:25 by artderva         ###   ########.fr       */
+/*   Created: 2020/06/06 17:10:19 by artderva          #+#    #+#             */
+/*   Updated: 2020/06/06 17:10:23 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "libft.h"
 
-static char		*ft_cut_str(char *str, size_t i)
+static int			ft_return(char *tmp, char **buff, char **line)
 {
-	char *ret;
+	char			*n;
 
-	if (!(ret = ft_strnew(ft_strlen(str) - i)) || !str)
-		return (NULL);
-	if (i < ft_strlen(str))
-		ret = ft_strcpy(ret, str + i + 1);
-	free(str);
-	return (ret);
+	if ((n = ft_strstr(tmp, "\n")))
+	{
+		*buff = ft_strcpy(*buff, n + 1);
+		*n = '\0';
+	}
+	*line = tmp;
+	if ((*line)[0] || n)
+		return (1);
+	free(*buff);
+	ft_strdel(line);
+	*buff = NULL;
+	return (0);
 }
 
-static char		*ft_strjoin_and_free(char *s1, char *s2)
+static	t_gnl		*ft_lst_fresh(int fd)
 {
-	char	*new;
+	t_gnl			*new;
 
-	if (!s1 || !s2 || !(new = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
+	if (!(new = (t_gnl *)ft_memalloc(sizeof(t_gnl))))
 		return (NULL);
-	if (!(new = ft_strcat(new, s1))
-	|| !(new = ft_strcat(new, s2)))
+	if (!(new->content = (char**)malloc(sizeof(char*))))
 		return (NULL);
-	free(s1);
+	*(new->content) = NULL;
+	new->num = fd;
+	new->next = NULL;
 	return (new);
 }
 
-static t_file	*ft_get_file(t_file **f_list, const int fd)
+static char			**ft_find_str(int fd)
 {
-	t_file	*file;
+	static t_gnl	*buff = NULL;
+	t_gnl			*tmp;
 
-	file = *f_list;
-	while (file)
+	if (buff)
 	{
-		if (file->fd == fd)
-			return (file);
-		file = file->next;
+		tmp = buff;
+		while (tmp->next && tmp->num != fd)
+			tmp = tmp->next;
+		if (tmp->num != fd)
+		{
+			if (!(tmp->next = ft_lst_fresh(fd)))
+				return (NULL);
+			tmp = tmp->next;
+		}
 	}
-	if (!(file = ft_memalloc(sizeof(t_file)))
-	|| !(file->content = (char*)malloc(BUFF_SIZE + 1)))
-		return (NULL);
-	file->fd = fd;
-	file->next = *f_list;
-	*f_list = file;
-	return (file);
-}
-
-static size_t	ft_strchrcpy(char **dst, char *src, char c)
-{
-	char *ptr;
-
-	if (!dst || !src)
-		return (0);
-	ptr = src;
-	while (*src && *src != c)
-		src++;
-	free(*dst);
-	if (!(*dst = ft_strnew(src - ptr + 1)))
-		return (0);
-	*dst = ft_strncpy(*dst, ptr, (size_t)(src - ptr));
-	return (src - ptr);
-}
-
-int				get_next_line(const int fd, char **line)
-{
-	static t_file	*f_list;
-	char			buf[BUFF_SIZE + 1];
-	ssize_t			ret;
-	t_file			*file;
-	size_t			i;
-
-	if (fd < 0 || !line || !(*line = ft_strnew(0))
-	|| read(fd, buf, 0) < 0 || !(file = ft_get_file(&f_list, fd)))
-		return (-1);
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
+	else
 	{
-		buf[ret] = '\0';
-		if (!(file->content = ft_strjoin_and_free(file->content, buf)))
+		if (!(buff = ft_lst_fresh(fd)))
+			return (NULL);
+		tmp = buff;
+	}
+	return (tmp->content);
+}
+
+int					get_next_line(const int fd, char **line)
+{
+	int				res;
+	char			*tmp;
+	char			*n;
+	char			**buff;
+
+	if (fd >= 0 && (buff = ft_find_str(fd)) && !*buff)
+		if (!(*buff = ft_strnew(BUFF_SIZE)))
 			return (-1);
-		if (ft_strchr(buf, '\n'))
+	if (fd < 0 || !line || !(tmp = ft_strdup(*buff))
+			|| read(fd, *buff, 0) < 0)
+		return (-1);
+	ft_bzero(*buff, BUFF_SIZE);
+	if ((n = ft_strstr(tmp, "\n")))
+		return (ft_return(tmp, buff, line));
+	while ((res = read(fd, *buff, BUFF_SIZE) > 0))
+	{
+		n = tmp;
+		if (!(tmp = ft_strjoin(tmp, *buff)))
+			return (-1);
+		free(n);
+		ft_bzero(*buff, BUFF_SIZE);
+		if ((n = ft_strstr(tmp, "\n")))
 			break ;
 	}
-	i = ft_strchrcpy(line, file->content, 10);
-	if (ret < BUFF_SIZE && !ft_strlen(file->content))
-	{
-		ft_fddel(&f_list, fd);
-		return (0);
-	}
-	file->content = ft_cut_str(file->content, i);
-	return (1);
+	return (ft_return(tmp, buff, line));
 }

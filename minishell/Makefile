@@ -17,7 +17,7 @@ SRC			= src/main.c \
 			src/cd/ft_cd_core.c \
 			src/cd/tools_cd.c
 INC			= includes/
-CC			= gcc
+CC			= clang
 CFLAGS			= -I $(INC)
 OBJ			= $(SRC:.c=.o)
 LIB			= libft/libft.a
