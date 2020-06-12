@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 19:16:39 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/12 15:50:15 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/12 18:38:38 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ char				**ft_strsplit(char const *s, char c);
 char				*ft_strstr(const char *s1, const char *s2);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strtrim(char const *s);
-int				ft_tolower(int c);
-int				ft_toupper(int c);
+int					ft_tolower(int c);
+int					ft_toupper(int c);
 
 typedef struct		s_list
 {
@@ -85,9 +85,9 @@ void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 
-int				ft_islower(int c);
-int				ft_isspace(int c);
-int				ft_isupper(int c);
+int					ft_islower(int c);
+int					ft_isspace(int c);
+int					ft_isupper(int c);
 void				ft_swap(int *a, int *b);
 char				*ft_strupcase(char *s);
 char				*ft_strlowcase(char *s);
@@ -100,11 +100,11 @@ long long			ft_atoll(const char *str);
 char				*ft_strjoin1(char *s1, char *s2);
 char				*ft_strjoin2(char *s1, char *s2);
 
-int				get_next_line(const int fd, char **line);
+int					get_next_line(const int fd, char **line);
 void				ft_del_tab(void **tab);
 char				*ft_strcut(char *str, char *d, unsigned int field);
 char				**ft_split(char *str, char *set);
 void				ft_lst_push_back(t_list **begin, void *cont, size_t size);
-int				ft_stchr(char *str, int c);
+int					ft_stchr(char *str, int c);
 
 #endif

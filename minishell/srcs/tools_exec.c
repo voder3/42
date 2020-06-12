@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 18:31:47 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/12 15:30:50 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/12 18:04:55 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ int		ft_isdir(char *path)
 
 int		is_file(char *path, char *str)
 {
-	DIR		*dir;
+	DIR				*dir;
 	struct dirent	*dit;
-	int		ret;
-	char		*name;
+	int				ret;
+	char			*name;
 
 	ret = 0;
 	if (!*str)

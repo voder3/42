@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 18:31:47 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/12 16:14:29 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/12 18:05:54 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ char		*absolute_path(char *exec)
 char		*ft_which(char *path, char *exec)
 {
 	struct dirent	*file;
-	char		**tab;
-	DIR		*dir;
-	int			i;
+	char			**tab;
+	DIR				*dir;
+	int				i;
 
 	i = -1;
 	if (ft_strchr(exec, '/'))
