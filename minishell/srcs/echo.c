@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_del_tab.c                                       :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/07 21:59:14 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/12 15:51:46 by artderva         ###   ########.fr       */
+/*   Created: 2020/06/04 19:11:26 by artderva          #+#    #+#             */
+/*   Updated: 2020/06/05 21:48:05 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void		ft_del_tab(void **tab)
+int		ft_echo(t_msh *msh)
 {
-	char	**target;
-	int		i;
+	int	i;
 
-	i = 0;
-	if (!tab || !*tab)
+	i = 1;
+	while ((msh->input[i]))
 	{
-		free(tab);
-		return ;
+		ft_putstr(msh->input[i++]);
+		ft_putchar(' ');
 	}
-	target = (char **)tab;
-	while (target[i])
-		ft_strdel(&target[i++]);
-	free(target);
+	ft_putchar('\n');
+	return (0);
 }

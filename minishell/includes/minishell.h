@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:58 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/06 18:04:34 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/12 15:53:00 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int			ft_call_cd(t_msh *msh);
 int			find_builtin(t_msh *msh);
 int			ft_error(char *s1, char *s2);
 void			ft_ex(char *s1, char *s2);
-char			*ft_getenvval(t_list *env, char *str);
+char			*ft_getenvval(t_list *env, char *str, int free);
 char			*ft_dolls(char *str, t_list *env, int *len);
 
 int			ft_cd(char **str, t_msh *data);
@@ -53,13 +53,13 @@ char			cd_getopt(char **str, int *i);
 int			cd_home(t_msh *msh);
 char			*cd_setcurpath(t_msh *data, char *opr);
 int			cd_logically(t_msh *data, char *curpath, char *opr);
-int			cd_change_directory(t_msh *data, char *curpath, char *opr, char *pwd);
+int			cd_change_directory(t_msh *data, char *cp, char *opr, char *pwd);
 
 char			*ft_strrep(char *str, char *rem, char *rep);
 char			*ft_pathjoin(char *s1, char *s2);
 int			cd_update_pwd(t_msh *data, char *pwd, char *oldpwd);
 
-int			cd_set_relativepath(t_msh *data, char *curpath, char *opr, char *pwd);
+int			cd_set_relativepath(t_msh *data, char *cp, char *opr, char *pwd);
 char			*cd_del_dotcomponents(char *curpath, char *opr);
 int			check_chdir_errors(char **str, char *path, char *opr);
 int			check_whole_path(char *path);

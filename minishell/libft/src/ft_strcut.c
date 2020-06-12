@@ -6,17 +6,11 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 19:07:52 by artderva          #+#    #+#             */
-/*   Updated: 2020/03/02 19:08:42 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/12 15:45:49 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "libft.h"
-
-/*
-**	Similar to shell command : cut -d'[delim]' -f[field]
-*/
-
 #include <stdio.h>
 
 char		*ft_strcut(char *str, char *delim, unsigned int field)

@@ -6,7 +6,7 @@
 #    By: artderva <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/15 18:05:08 by artderva          #+#    #+#              #
-#    Updated: 2020/06/06 15:20:32 by artderva         ###   ########.fr        #
+#    Updated: 2020/06/12 15:28:38 by artderva         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,7 +87,8 @@ SRCS = ft_atoi.c \
 	ft_strjoin2.c \
 	get_next_line.c \
 	ft_del_tab.c \
-	ft_strcut.c	\
+	ft_strcut.c \
+	ft_stchr.c \
 	printf/conv_csp.c	\
 	printf/conv_di.c	\
 	printf/conv_f.c	\

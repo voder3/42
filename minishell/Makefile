@@ -1,40 +1,72 @@
-NAME			= minishell
-SRC			= src/main.c \
-			src/ft_env.c \
-			src/builtin.c \
-			src/echo.c \
-			src/exit.c \
-			src/unsetenv.c \
-			src/exec.c \
-			src/tools_exec.c \
-			src/ft_expanstr.c \
-			src/exp_dollar.c \
-			src/tools.c \
-			src/cd/chdir_errors.c \
-			src/cd/chdir_errors2.c \
-			src/cd/ft_cd2.c \
-			src/cd/ft_cd.c \
-			src/cd/ft_cd_core.c \
-			src/cd/tools_cd.c
-INC			= includes/
-CC			= gcc
-CFLAGS			= -I $(INC)
-OBJ			= $(SRC:.c=.o)
-LIB			= libft/libft.a
+NAME = minishell
 
-all: $(NAME)
-%.o: %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-	@printf "[minishell] Compiling [:.]\r"
-$(NAME): $(OBJ)
-	@printf "[minishell] Compiled successfuly! [OK]\n"
-	@gcc $(CFLAGS) $(OBJ) -o $(NAME) -L libft -lft
-clean:
-	@/bin/rm -f $(OBJ)
-	@printf "[minishell] Removed object files!\n"
-fclean: clean
-	@/bin/rm -f $(NAME)
-	@printf "[minishell] Removed minishell binary!\n"
-re: fclean all
+SRC += cd/ft_cd.c 
+SRC += cd/ft_cd_core.c
+SRC += cd/ft_cd2.c
+SRC += cd/chdir_errors.c
+SRC += cd/chdir_errors2.c
+SRC += cd/tools_cd.c
+SRC += builtin.c 
+SRC += echo.c
+SRC += exec.c
+SRC += exp_dollar.c
+SRC += exit.c
+SRC += ft_env.c
+SRC += ft_expanstr.c
+SRC += main.c
+SRC += tools.c
+SRC += tools_exec.c
+SRC += unsetenv.c
 
-.PHONY: all clean fclean re
+OPATHS += $(OPATH)cd
+
+INCLUDES += minishell.h
+
+CC = clang
+COMPILE = $(CC) -c
+WFLAGS = -Wall -Werror -Wextra
+IFLAGS = -I $(IPATH) -I $(LIPATH)
+CFLAGS = $(WFLAGS) $(IFLAGS)
+
+MKDIR = mkdir -p
+CLEANUP = rm -rf
+
+OPATH = objs/
+SPATH = srcs/
+IPATH = includes/
+LPATH = libft/
+LIPATH = libft/includes/
+LIB = $(LPATH)libft.a
+
+OBJ = $(SRC:.c=.o)
+
+SRCS = $(addprefix $(SPATH),$(SRC))
+OBJS = $(addprefix $(OPATH),$(OBJ))
+INCS = $(addprefix $(IPATH),$(INCLUDES))
+
+all : $(NAME)
+
+$(NAME) : lib $(OPATHS) $(OBJS) Makefile
+	@$(CC) -o $@ $(OBJS) $(LIB)
+
+$(OBJS) : $(OPATH)%.o : $(SPATH)%.c $(INCS)
+	@$(COMPILE) $(CFLAGS) $< -o $@
+
+$(OPATHS) :
+	@$(MKDIR) $@
+
+lib :
+	@$(MAKE) -C $(LPATH)
+
+clean :
+	@$(MAKE) -C $(LPATH) clean
+	@$(CLEANUP) $(OPATH)
+
+fclean : clean
+	@$(MAKE) -C $(LPATH) fclean
+	@$(CLEANUP) $(OPATH)
+	@$(CLEANUP) $(NAME)
+
+re : fclean all
+
+.PHONY: all clean fclean

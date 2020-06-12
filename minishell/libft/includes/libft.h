@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 19:16:39 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/06 19:23:46 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/12 15:50:15 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int				get_next_line(const int fd, char **line);
 void				ft_del_tab(void **tab);
 char				*ft_strcut(char *str, char *d, unsigned int field);
 char				**ft_split(char *str, char *set);
-void				ft_lst_push_back(t_list **begin, void *content, size_t size);
+void				ft_lst_push_back(t_list **begin, void *cont, size_t size);
+int				ft_stchr(char *str, int c);
 
 #endif
