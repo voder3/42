@@ -6,25 +6,11 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:05 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/12 16:09:00 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/15 19:37:11 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*ft_getenv(t_list *env, char *name)
-{
-	char	*res;
-
-	res = NULL;
-	while (env && !res)
-	{
-		if (!ft_strcmp(name, ((t_var *)(env->content))->tab[0]))
-			res = ((t_var *)(env->content))->tab[1];
-		env = env->next;
-	}
-	return (res);
-}
 
 void	ft_print_env(t_list *env)
 {
@@ -34,6 +20,21 @@ void	ft_print_env(t_list *env)
 		((t_var *)(env->content))->tab[1]);
 		env = env->next;
 	}
+}
+
+void	ft_create_env(t_list **l, t_var env)
+{
+	char	**t;
+
+	if (!(t = (char **)malloc(sizeof(char *) * 2)))
+		ft_ex(NULL, "memomy allocation fail");
+	if (!(t[0] = ft_strjoin(env.tab[0], "=")))
+		ft_ex(NULL, "memomy allocation fail");
+	if (!(t[0] = ft_strjoin1(t[0], env.tab[1])))
+		ft_ex(NULL, "memomy allocation fail");
+	t[1] = NULL;
+	ft_setenvlist(l, t);
+	ft_del_tab((void **)t);
 }
 
 void	add_env_to_lst(t_list *l, t_var env, int overw)
@@ -80,7 +81,10 @@ int		ft_setenv(t_msh *msh)
 	if (msh->input[3])
 		overw = ft_atoi(msh->input[3]);
 	lst = msh->env_var;
-	add_env_to_lst(lst, env, overw);
+	if (!lst)
+		ft_create_env(&msh->env_var, env);
+	else
+		add_env_to_lst(lst, env, overw);
 	return (0);
 }
 

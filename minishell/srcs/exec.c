@@ -6,14 +6,12 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 18:31:47 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/12 18:05:54 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/15 20:50:00 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "dirent.h"
-#include <stdio.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 
 static char	*which_path(char *path, char *exec, char **tab, int i)
@@ -47,6 +45,20 @@ char		*absolute_path(char *exec)
 	return (NULL);
 }
 
+char		**ft_err_which(char *path, char *exec)
+{
+	char	**tab;
+
+	if (!path)
+	{
+		ft_error(exec, ": command not found");
+		return (NULL);
+	}
+	if (!(tab = ft_strsplit(path, ':')))
+		ft_ex(NULL, "memory allocation failed");
+	return (tab);
+}
+
 char		*ft_which(char *path, char *exec)
 {
 	struct dirent	*file;
@@ -57,7 +69,7 @@ char		*ft_which(char *path, char *exec)
 	i = -1;
 	if (ft_strchr(exec, '/'))
 		return (absolute_path(exec));
-	if (!(path && exec && (tab = ft_strsplit(path, ':'))))
+	if (!(tab = ft_err_which(path, exec)))
 		return (NULL);
 	while (tab[++i])
 	{
@@ -73,35 +85,6 @@ char		*ft_which(char *path, char *exec)
 	ft_error(exec, ": command not found");
 	ft_del_tab((void **)tab);
 	return (NULL);
-}
-
-char		**env_to_tab(t_list *env)
-{
-	char		**ar;
-	t_list		*tmp;
-	int			i;
-
-	i = 0;
-	tmp = env;
-	while (tmp)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	if (!(ar = (char **)malloc(sizeof(char *) * (i + 1))))
-		ft_ex(NULL, "memory allocation failed");
-	i = 0;
-	while (env)
-	{
-		if (!(ar[i] = ft_strjoin(((t_var *)(env->content))->tab[0], "=")))
-			ft_ex(NULL, "memory allocation failed");
-		if (!(ar[i] = ft_strjoin1(ar[i], ((t_var *)(env->content))->tab[1])))
-			ft_ex(NULL, "memory allocation failed");
-		env = env->next;
-		i++;
-	}
-	ar[i] = NULL;
-	return (ar);
 }
 
 int			ft_is_exec(t_msh *msh)
@@ -121,7 +104,7 @@ int			ft_is_exec(t_msh *msh)
 		pid = fork();
 		if (pid == 0)
 			if (execve(exec, msh->input, env) == -1)
-				return (ft_error(NULL, "execution failed"));
+				return (ft_err_fork());
 		if (pid == -1)
 			ft_ex(NULL, "fork failed");
 		else

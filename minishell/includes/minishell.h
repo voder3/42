@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:58 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/12 18:11:24 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/15 20:50:36 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int					ft_error(char *s1, char *s2);
 void				ft_ex(char *s1, char *s2);
 char				*ft_getenvval(t_list *env, char *str, int free);
 char				*ft_dolls(char *str, t_list *env, int *len);
-
+char				*ft_getenv(t_list *env, char *name);
+char				**env_to_tab(t_list *env);
 int					ft_cd(char **str, t_msh *data);
 char				cd_getopt(char **str, int *i);
 int					cd_home(t_msh *msh);
@@ -69,5 +70,7 @@ void				free_struct(t_msh *data);
 void				del_struct_tvar(void *del, size_t u);
 int					ft_isdir(char *path);
 int					is_file(char *path, char *str);
+int					ft_err_fork(void);
+
 
 #endif

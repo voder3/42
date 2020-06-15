@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unsetenv.c                                         :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 17:45:02 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/06 20:02:36 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/15 19:50:24 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,18 @@ int		ft_setenvlist(t_list **list, char **envp)
 		i++;
 	}
 	return (1);
+}
+
+char	*ft_getenv(t_list *env, char *name)
+{
+	char	*res;
+
+	res = NULL;
+	while (env && !res)
+	{
+		if (!ft_strcmp(name, ((t_var *)(env->content))->tab[0]))
+			res = ((t_var *)(env->content))->tab[1];
+		env = env->next;
+	}
+	return (res);
 }

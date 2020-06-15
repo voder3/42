@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 18:31:47 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/12 18:04:55 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/15 20:49:39 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,33 @@ int		is_file(char *path, char *str)
 	closedir(dir);
 	*str = *str ? *str : '/';
 	return (ret);
+}
+
+char		**env_to_tab(t_list *env)
+{
+	char		**ar;
+	t_list		*tmp;
+	int			i;
+
+	i = 0;
+	tmp = env;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	if (!(ar = (char **)malloc(sizeof(char *) * (i + 1))))
+		ft_ex(NULL, "memory allocation failed");
+	i = 0;
+	while (env)
+	{
+		if (!(ar[i] = ft_strjoin(((t_var *)(env->content))->tab[0], "=")))
+			ft_ex(NULL, "memory allocation failed");
+		if (!(ar[i] = ft_strjoin1(ar[i], ((t_var *)(env->content))->tab[1])))
+			ft_ex(NULL, "memory allocation failed");
+		env = env->next;
+		i++;
+	}
+	ar[i] = NULL;
+	return (ar);
 }

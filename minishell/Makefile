@@ -16,7 +16,7 @@ SRC += ft_expanstr.c
 SRC += main.c
 SRC += tools.c
 SRC += tools_exec.c
-SRC += unsetenv.c
+SRC += env.c
 
 OPATHS += $(OPATH)cd
 

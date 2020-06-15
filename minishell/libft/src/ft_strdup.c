@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/08 16:12:29 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/10 16:48:35 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/13 18:43:33 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*ft_strdup(const char *src)
 
 	len = 0;
 	i = -1;
+	if (!src)
+		return (NULL);
 	while (src[++i])
 		len++;
 	if (!(dup = (char *)malloc(sizeof(char) * (len + 1))))
