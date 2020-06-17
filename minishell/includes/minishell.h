@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:54:58 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/15 20:50:36 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/17 14:03:13 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,5 @@ void				del_struct_tvar(void *del, size_t u);
 int					ft_isdir(char *path);
 int					is_file(char *path, char *str);
 int					ft_err_fork(void);
-
 
 #endif

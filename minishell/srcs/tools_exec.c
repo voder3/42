@@ -6,7 +6,7 @@
 /*   By: artderva <artderva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/05 18:31:47 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/15 20:49:39 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/17 14:03:30 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int		is_file(char *path, char *str)
 	return (ret);
 }
 
-char		**env_to_tab(t_list *env)
+char	**env_to_tab(t_list *env)
 {
 	char		**ar;
 	t_list		*tmp;
