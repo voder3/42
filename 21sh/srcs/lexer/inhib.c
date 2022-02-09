@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   inhib.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:16 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:16 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "ft_printf.h"
 #include "lexer.h"
@@ -9,27 +21,11 @@ int	l_build_inhib(t_lexer *lexer, char c)
 		if (!l_create_token(lexer))
 			return (0);
 	}
-	if (c == '\"')
-		l_add_flag(lexer, c);
-	else if (c == '\'')
-		l_add_flag(lexer, c);
-	else if (c == '\\')
+	if (ft_strchr("\"\'\\", c))
 		l_add_flag(lexer, c);
 	l_buffer_add(lexer, c);
 	lexer->state = S_FLAG;
 	lexer->curr_token->type = WORD;
-	return (1);
-}
-
-int	l_inhib_add(t_lexer *lexer, char c)
-{
-	if (l_get_flag(lexer, F_BSLASH))
-		l_bslash_add(lexer, c);
-	else if (l_get_flag(lexer, F_DQUOTE))
-		l_dquote_add(lexer, c);
-	else if (l_get_flag(lexer, F_SQUOTE))
-		l_buffer_add(lexer, c);
-	lexer->state = S_FLAG;
 	return (1);
 }
 

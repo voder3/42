@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/07/01 14:06:20 by pacharbo          #+#    #+#              #
+#    Updated: 2020/07/01 14:06:22 by pacharbo         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = libft.a
 NAMEDB = libft_db.a
 
@@ -52,18 +64,19 @@ SRCS += ft_isprint.c
 SRCS += ft_strcat.c
 SRCS += ft_strchr.c
 SRCS += ft_strchri.c
+SRCS += ft_strclnjoin.c
 SRCS += ft_strclr.c
 SRCS += ft_strcmp.c
 SRCS += ft_strcpy.c
 SRCS += ft_strdel.c
 SRCS += ft_strdup.c
 SRCS += ft_strequ.c
-SRCS += ft_strichr.c
 SRCS += ft_striter.c
 SRCS += ft_striteri.c
 SRCS += ft_strjoin.c
 SRCS += ft_strjoinfree.c
 SRCS += ft_strlcat.c
+SRCS += ft_strlclnjoin.c
 SRCS += ft_strlen.c
 SRCS += ft_strmap.c
 SRCS += ft_strmapi.c
@@ -76,6 +89,7 @@ SRCS += ft_strnequ.c
 SRCS += ft_strnew.c
 SRCS += ft_strnstr.c
 SRCS += ft_strrchr.c
+SRCS += ft_strrchri.c
 SRCS += ft_strselect.c
 SRCS += ft_strsplit.c
 SRCS += ft_strstr.c
@@ -85,6 +99,9 @@ SRCS += ft_tolower.c
 SRCS += ft_toupper.c
 SRCS += ft_wcharlen.c
 SRCS += ft_wstrlen.c
+SRCS += ft_tabdup.c
+SRCS += ft_isname.c
+SRCS += ft_strtrimoc.c
 
 #-------------------------List-----------------------------#
 SRCS += ft_lstadd.c
@@ -106,6 +123,10 @@ SRCS += ft_dlstaddtail.c
 SRCS += ft_dlstnew.c
 SRCS += ft_dlstdel.c
 SRCS += ft_dlstdelone.c
+SRCS += ft_lsthave.c
+SRCS += ft_lstdup.c
+SRCS += ft_lstcount.c
+
 #-------------------------Conversion-----------------------#
 SRCS += ft_atoi.c
 SRCS += ft_itoa.c
@@ -133,6 +154,18 @@ SRCS += uint.c
 SRCS += ft_which.c
 SRCS += ft_isdir.c
 
+#--------------------------Hash----------------------------#
+SRCS += ft_hash_str.c
+SRCS += ft_hash_del_list.c
+SRCS += ft_hash_del_map.c
+SRCS += ft_hash_delone.c
+SRCS += ft_hash_get_list.c
+SRCS += ft_hash_get_node.c
+SRCS += ft_hash_init.c
+SRCS += ft_hash_lookup.c
+SRCS += ft_hash_add.c
+SRCS += ft_hash_reset.c
+
 #------------------------------------------------------------#
 
 vpath %.c srcs/conversion
@@ -143,14 +176,18 @@ vpath %.c srcs/memory
 vpath %.c srcs/output
 vpath %.c srcs/input
 vpath %.c srcs/string
+vpath %.c srcs/hash
 vpath %.c srcs/ft_printf/srcs
 
 vpath %.h includes
 
-
 PATHO = objs/
 PATHS = srcs/
 PATHI = includes/
+
+INC += $(PATHI)/ft_printf.h
+INC += $(PATHI)/get_next_line.h
+INC += $(PATHI)/libft.h
 
 CLEANUP = rm -rf
 MKDIR = mkdir -p
@@ -163,17 +200,13 @@ IFLAGS = -I$(PATHI)
 CFLAGS = -Wall -Werror -Wextra $(IFLAGS)
 DBFLAGS = -fsanitize=address $(CFLAGS)
 
-
 OBJS = $(patsubst %.c, $(PATHO)%.o, $(SRCS))
 OBJD = $(patsubst %.c, $(PATHO)db%.o, $(SRCS))
-
-
 
 all : $(NAME)
 debug : $(NAMEDB)
 
-
-$(NAME) : $(PATHO) $(OBJS)
+$(NAME) : $(PATHO) $(OBJS) Makefile $(INC)
 	ar rc $@ $(OBJS)
 	ranlib $@
 	printf "\t\t\t$(GREEN)$@ is ready.\n$(NC)"
@@ -181,8 +214,6 @@ $(NAME) : $(PATHO) $(OBJS)
 $(OBJS) : $(PATHO)%.o : %.c
 	$(COMPIL) $(CFLAGS) $< -o $@
 	printf "$(BLUE)  Compiling $<\n"
-
-
 
 $(NAMEDB) : $(PATHO) $(OBJD)
 	@ar rus $@ $(OBJD)
@@ -193,12 +224,8 @@ $(OBJD): $(PATHO)db%.o : %.c
 	$(COMPILDB) $(DBFLAGS) $< -o $@
 	printf "$(BLUE)Compiling $<       [DEBUG]\n$(NC)"
 
-
-
 $(PATHO) :
 	mkdir -p $(PATHO)
-
-
 
 clean :
 	$(CLEANUP) $(PATHO)

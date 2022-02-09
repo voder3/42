@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:17 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:17 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "ft_printf.h"
 #include "lexer.h"
@@ -42,5 +54,15 @@ int	l_delim_redir(t_lexer *lexer, char c)
 	l_delim_token(lexer, c);
 	lexer->state = S_TK_START;
 	l_build_redir(lexer, c);
+	return (1);
+}
+
+int	l_add_hyphen_redir(t_lexer *lexer, char c)
+{
+	if (ft_strnequ("<<", lexer->buffer, 2))
+	{
+		l_buffer_add(lexer, c);
+		lexer->curr_token->type = DLESSDASH;
+	}
 	return (1);
 }

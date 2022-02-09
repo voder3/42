@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchri.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/12 18:50:52 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/01/12 18:50:52 by hmerieux         ###   ########.fr       */
+/*   Created: 2020/07/01 14:03:20 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:03:20 by pacharbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_strchr(const char *s, int c)
+int		ft_strchri(const char *s, int c)
 {
 	int		i;
 	char	*str;

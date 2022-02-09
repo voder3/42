@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   control.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:17 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:17 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "ft_printf.h"
 #include "lexer.h"
 
-void	init_amp_pipe_state(int (*token_builder[8][11])(t_lexer *, char))
+void	init_amp_pipe_state(int (*token_builder[9][12])(t_lexer *, char))
 {
 	token_builder[S_AMP_PIPE][C_INHIBITOR] = l_delim_inhib;
 	token_builder[S_AMP_PIPE][C_CONTROL] = l_build_control;
@@ -11,8 +23,9 @@ void	init_amp_pipe_state(int (*token_builder[8][11])(t_lexer *, char))
 	token_builder[S_AMP_PIPE][C_DIGIT] = l_delim_digit;
 	token_builder[S_AMP_PIPE][C_EXP] = l_delim_exp;
 	token_builder[S_AMP_PIPE][C_BLANK] = l_delim_token;
-	token_builder[S_AMP_PIPE][C_EOI] = l_do_nothing;
+	token_builder[S_AMP_PIPE][C_EOI] = l_delim_token;
 	token_builder[S_AMP_PIPE][C_BRACK] = l_delim_word;
 	token_builder[S_AMP_PIPE][C_EQU] = l_delim_word;
+	token_builder[S_AMP_PIPE][C_HASH] = l_delim_word;
 	token_builder[S_AMP_PIPE][C_OTHER] = l_delim_word;
 }

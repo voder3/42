@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/12 18:47:08 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/01/12 18:47:39 by hmerieux         ###   ########.fr       */
+/*   Created: 2020/07/01 14:03:17 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:03:17 by pacharbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int			ft_return(char *tmp, char **buff, char **line)
 	if ((*line)[0] || n)
 		return (1);
 	free(*buff);
+	ft_strdel(line);
 	*buff = NULL;
 	return (0);
 }
@@ -89,7 +90,7 @@ int					get_next_line(const int fd, char **line)
 	while ((res = read(fd, *buff, BUFF_SIZE) > 0))
 	{
 		n = tmp;
-		if (!(tmp = ft_strjoin(2, tmp, *buff)))
+		if (!(tmp = ft_strjoin(tmp, *buff)))
 			return (-1);
 		free(n);
 		ft_bzero(*buff, BUFF_SIZE);

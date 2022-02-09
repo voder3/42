@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:19 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:19 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "lexer.h"
 #include "parser.h"
@@ -10,12 +22,12 @@ t_assignment	*init_assignment(void)
 	return (assign);
 }
 
-t_redir		*init_redir(void)
+t_redir			*init_redir(void)
 {
 	t_redir		*redir;
 
 	redir = (t_redir *)ft_memalloc(sizeof(t_redir));
-	redir->io_num = -1;
+	redir->io_num = NULL;
 	return (redir);
 }
 
@@ -27,7 +39,7 @@ t_simple_cmd	*init_simple_cmd(void)
 	return (cmd);
 }
 
-t_and_or	*init_and_or(void)
+t_and_or		*init_and_or(void)
 {
 	t_and_or	*and_or;
 
@@ -39,7 +51,7 @@ t_and_or	*init_and_or(void)
 	return (and_or);
 }
 
-t_cmd_table	*init_cmd_table(void)
+t_cmd_table		*init_cmd_table(void)
 {
 	t_cmd_table	*table;
 

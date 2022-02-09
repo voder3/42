@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_which.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/12 18:53:28 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/01/12 19:34:38 by hmerieux         ###   ########.fr       */
+/*   Created: 2020/07/01 14:03:23 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:03:23 by pacharbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_printf.h"
 #include <dirent.h>
 
 char			*ft_which(char *paths, char *exec)
@@ -33,7 +34,7 @@ char			*ft_which(char *paths, char *exec)
 			if (ft_strcmp(file->d_name, exec) == 0)
 				break ;
 		closedir(dir);
-		if (file && (tmp = ft_strjoin(3, tab[i], "/", exec)))
+		if (file && ft_asprintf(&tmp, "%s/%s", tab[i], exec))
 			break ;
 	}
 	ft_del_tab((void **)tab);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   misc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guaubret <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/19 19:20:50 by guaubret          #+#    #+#             */
-/*   Updated: 2019/08/21 12:22:29 by guaubret         ###   ########.fr       */
+/*   Created: 2020/07/01 14:05:42 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:05:42 by pacharbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@ void			xtoa_base(uintmax_t val, int base, char s[21], t_printf *data)
 	int		len;
 	char	c;
 
-	if (val && !CH_PCONV(data->flags) && CH_ZERO(data->flags)
-	&& CH_SHARP(data->flags) && base == 16
-	&& !CH_LL(data->flags) && data->printed > 3)
+	if (val && !(data->flags & (1 << 12)) && data->flags & (1 << 1)
+	&& data->flags & (1 << 0) && base == 16
+	&& !(data->flags & (1 << 10)) && data->printed > 3)
 		data->printed -= 2;
 	len = data->printed;
-	c = (CH_UPX(data->flags)) ? 55 : 87;
+	c = (data->flags & (1 << 11)) ? 55 : 87;
 	while (len--)
 	{
 		s[len] = val % base + ((val % base < 10) ? '0' : c);
 		val /= base;
 	}
-	(CH_PGIVEN(data->flags) && CH_ZERO(data->flags)) ? s[0] = ' ' : 0;
+	(data->flags & (1 << 15) && data->flags & (1 << 1)) ? s[0] = ' ' : 0;
 }
 
 static void		as_flush(t_printf *data)
@@ -39,17 +39,23 @@ static void		as_flush(t_printf *data)
 	if (!*(data->str))
 	{
 		if (!(*data->str = ft_strnew(data->buf_len + 1)))
+		{
 			data->ret = -1;
+			return ;
+		}
 		ft_strncpy(*(data->str), data->buf, data->buf_len);
 	}
 	else
 	{
 		len = ft_strlen(*(data->str));
 		if (!(new = ft_strnew(len + data->buf_len + 1)))
+		{
 			data->ret = -1;
+			return ;
+		}
 		ft_strcpy(new, *(data->str));
 		free(*(data->str));
-		ft_strncat(new, data->buf, len + data->buf_len);
+		ft_strncat(new, data->buf, data->buf_len);
 		*(data->str) = new;
 	}
 }
@@ -102,14 +108,14 @@ void			add_pad(t_printf *data, int n)
 {
 	if (data->pad <= 0)
 		return ;
-	if (CH_ZERO(data->flags))
+	if (data->flags & (1 << 1))
 		data->conv = 48;
 	else
 		data->conv = 32;
-	if (!n && !CH_MINUS(data->flags))
+	if (!n && !(data->flags & (1 << 2)))
 		while ((data->pad)--)
 			buffer((void *)&(data->conv), data, 1);
-	else if (n && CH_MINUS(data->flags))
+	else if (n && data->flags & (1 << 2))
 		while ((data->pad)--)
 			buffer((void *)&(data->conv), data, 1);
 }

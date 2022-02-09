@@ -1,50 +1,100 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_shell.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:16 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:16 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "exec.h"
+#include "var.h"
 #include "sh.h"
 #include "struct.h"
 #include "libft.h"
+#include "ft_printf.h"
 #include <sys/types.h>
 #include <termios.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include <signal.h>
 
-void		set_signal_ign(void)
+void		set_var(t_cfg *shell)
 {
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
-	signal(SIGTTIN, SIG_IGN);
-	signal(SIGTTOU, SIG_IGN);
-	signal(SIGCHLD, SIG_DFL);  //only for exec ?
-	//signal(SIGCHLD, SIG_IGN);
+	char	*sl;
+	char	*pid;
+
+	pid = ft_itoa(shell->pid);
+	setvar_add(&shell->sp, "$", pid);
+	setvar_add(&shell->sp, "?", "0");
+	setvar_add(&shell->sp, "!", "0");
+	setvar_add(&shell->sp, "*", 0);
+	setvar_add(&shell->sp, "@", 0);
+	setvar_add(&shell->sp, "#", 0);
+	setvar_add(&shell->sp, "-", 0);
+	setvar_add(&shell->sp, "0", 0);
+	ft_strdel(&pid);
+	ft_setvar(&shell->intern, "PS1", NAME_SH);
+	ft_setvar(&shell->intern, "PS2", "> ");
+	sl = ft_itoa(ft_atoi(find_var_value(shell->env, "SHLVL")) + 1);
+	ft_setvar(&shell->env, "SHLVL", sl);
+	ft_strdel(&sl);
 }
 
-void		init_cfg(t_cfg *cfg, char **env)
+void		hdl_sighup(int sig)
 {
-	ft_bzero(cfg, sizeof(t_cfg));
-	cfg->pid = getpid();
-	create_lst_env(&cfg->var, env);
-	// faire liste de variables interne ??
+	t_cfg	*shell;
+	t_list	*lst;
+	t_job	*j;
+
+	shell = cfg_shell();
+	lst = shell->job;
+	while (lst)
+	{
+		j = lst->data;
+		kill(-j->pgid, sig);
+		kill(-j->pgid, SIGCONT);
+		lst = lst->next;
+	}
+	if (shell->cur_job)
+		kill(-shell->cur_job, sig);
+	ft_printf("\n%s:\t%d hangup\n", PROJECT, shell->pid);
+	exit_routine(shell, 129);
 }
 
-void		init_shell(t_cfg *cfg, char **env)
+static int	check_terminal(t_cfg *cfg, uint8_t tty)
 {
-	uint8_t	shell_terminal;
-	pid_t	shell_pgid;
+	if (isatty(tty))
+	{
+		if ((tcgetattr(tty, &cfg->term_origin) == FALSE))
+			ft_ex(EX);
+		return (1);
+	}
+	ft_ex(EXFD);
+	return (0);
+}
+
+t_cfg		*init_shell(char **env, char **av, int ac)
+{
+	uint8_t		shell_terminal;
+	pid_t		shell_pgid;
+	t_cfg		*shell;
 
 	shell_terminal = STDIN_FILENO;
-	init_cfg(cfg, env);
-	if ((cfg->interactive = isatty(shell_terminal)))
+	shell = init_cfg(env, av, ac);
+	if (shell->interactive && check_terminal(shell, shell_terminal))
 	{
 		while (tcgetpgrp(shell_terminal) != (shell_pgid = getpgrp()))
 			kill(-shell_pgid, SIGTTIN);
 		set_signal_ign();
-		if (setpgid(cfg->pid, cfg->pid) < 0)
-			ex("[INIT SHELL] error setpgid");
-		if (tcsetpgrp(STDIN_FILENO, cfg->pid))
-			perror("[INIT SHELL] error tcsetpgrp");
-		tcgetattr(STDIN_FILENO, &cfg->term_origin);
+		signal(SIGHUP, hdl_sighup);
+		if (setpgid(shell->pid, shell->pid) < 0)
+			ft_ex(EX);
+		if (tcsetpgrp(shell_terminal, shell->pid))
+			ft_ex(EX);
 	}
-
-// faire partie non interactive !!
-
+	return (shell);
 }

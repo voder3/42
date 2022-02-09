@@ -6,7 +6,7 @@
 /*   By: artderva <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 16:51:06 by artderva          #+#    #+#             */
-/*   Updated: 2020/06/15 17:36:44 by artderva         ###   ########.fr       */
+/*   Updated: 2020/06/19 14:07:38 by artderva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,17 @@ int		main(int ac, char **av, char **env)
 {
 	t_msh	msh;
 	char	*line;
-	int		i;
 
-	i = 1;
 	line = NULL;
 	(void)ac;
 	(void)av;
 	ft_init(env, &msh);
-	while (i)
+	while (1)
 	{
 		ft_putstr("msh> ");
-		if ((i = get_next_line(0, &line)) == -1)
+		if ((get_next_line(0, &line)) == -1)
 			ft_ex(NULL, "memomy allocation failed");
-		if (*line)
+		if (line)
 		{
 			minishell(line, &msh);
 			ft_strdel(&line);

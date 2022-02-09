@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/12 18:52:54 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/01/12 18:52:54 by hmerieux         ###   ########.fr       */
+/*   Created: 2020/07/01 14:03:22 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:03:22 by pacharbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 static int	parser(char const *s, char *c)
 {
-	while (ft_strchr(c, *s) && *s)
+	while (s && *s && ft_strchr(c, *s))
 		s++;
-	if (*s == '\0')
+	if (!s || *s == '\0')
 		return (0);
-	while (!ft_strchr(c, *s) && *s)
+	while (s && *s && !ft_strchr(c, *s))
 		s++;
 	return (1 + parser(s, c));
 }

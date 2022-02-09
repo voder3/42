@@ -1,7 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleaner.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:15 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:15 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "exec.h"
 #include "libft.h"
+#include "sh.h"
 
-#include <stdio.h>
+void	free_fd(void *del, size_t u)
+{
+	(void)u;
+	free(del);
+}
 
 void	del_struct_process(void *del, size_t u)
 {
@@ -9,27 +26,27 @@ void	del_struct_process(void *del, size_t u)
 
 	(void)u;
 	p = del;
+	ft_lstdel(&p->env, del_struct_tvar);
+	ft_lstdel(&p->fd, free_fd);
 	ft_strdel(&(p->cmd));
 	ft_del_tab((void **)p->av);
 	ft_strdel(&p->path);
+	ft_strdel(&p->message);
 	free(del);
 }
 
-void	del_struct_tvar(void *del, size_t u)
+void	routine_clean_job(void *del, size_t u)
 {
+	t_job	*j;
 
-	t_var	*v;
-
-	(void)u;
-	v = del;
-	ft_del_tab((void **)v->ctab);
-	free(v);
+	j = del;
+	ft_strdel(&j->cmd);
+	ft_lstdel(&j->process, del_struct_process);
+	ft_bzero(j, u);
 }
 
-int		routine_clean_job(t_job *j)
+void	del_struct_job(void *del, size_t u)
 {
-	ft_strdel(&j->command);
-	ft_lstdel(&j->process, del_struct_process);
-	ft_lstdel(&j->var, del_struct_tvar);
-	return (0);
+	routine_clean_job(del, u);
+	free(del);
 }

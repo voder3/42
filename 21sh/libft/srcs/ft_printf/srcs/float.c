@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   float.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guaubret <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/19 19:20:43 by guaubret          #+#    #+#             */
-/*   Updated: 2019/08/21 18:20:03 by guaubret         ###   ########.fr       */
+/*   Created: 2020/07/01 14:05:42 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:05:42 by pacharbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static double	get_float_val(t_printf *data)
 {
 	double		val;
 
-	if (CH_LL(data->flags))
+	if (data->flags & (1 << 10))
 		val = (double)va_arg(data->ap, long double);
 	else
 		val = (double)va_arg(data->ap, double);
@@ -31,11 +31,11 @@ void			conv_float(t_printf *data)
 	int			i;
 
 	val = get_float_val(data);
-	ft_ftoa(val, (CH_PGIVEN(data->flags) ? data->prec : -1), res);
+	ft_ftoa(val, (data->flags & (1 << 15) ? data->prec : -1), res);
 	i = 0;
 	ft_bzero((void *)s, CVTBUFSZ);
-	CH_SPACE(data->flags) ? s[0] = ' ' : 0;
-	(CH_PLUS(data->flags) && val >= 0) ? s[0] = '+' : 0;
+	data->flags & (1 << 3) ? s[0] = ' ' : 0;
+	(data->flags & (1 << 4) && val >= 0) ? s[0] = '+' : 0;
 	(s[0]) ? i = 1 : 0;
 	data->pad = data->width - ft_strlen(res) + i;
 	add_pad(data, 0);

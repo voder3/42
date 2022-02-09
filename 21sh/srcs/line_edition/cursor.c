@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cursor.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ambelghi <marvin@42.fr>                    +#+  +:+       +#+        */
-
-/*   Created: 2020/01/13 16:11:17 by ambelghi          #+#    #+#             */
-/*   Updated: 2020/02/13 15:52:40 by ambelghi         ###   ########.fr       */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:18 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:18 by pacharbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 #include "line_edition.h"
 #include "struct.h"
 
-void	cs_set(void)
+void		cs_set(void)
 {
 	struct winsize	size;
-	t_cs_line			*cs;
+	t_cs_line		*cs;
 
 	if ((cs = cs_master(NULL, 0)))
 	{
@@ -25,11 +25,10 @@ void	cs_set(void)
 		cs->screen.x = size.ws_col;
 		cs->screen.y = size.ws_row;
 		cs->tty = ttyslot();
-		print_prompt(cs);
 	}
 }
 
-void	move_cs(t_cs_line **cs)
+void		move_cs(t_cs_line **cs)
 {
 	t_cs_line	*tmp;
 	t_point		pos;
@@ -45,10 +44,12 @@ void	move_cs(t_cs_line **cs)
 
 t_cs_line	*cs_master(char *prompt, int init)
 {
-	static t_cs_line	cs = {0};
+	static t_cs_line cs;
 
 	if (init == 1)
 	{
+		ft_bzero(&cs, 20);
+		cs.history = NULL;
 		get_cs_line_position(&cs.min_col, &cs.min_row);
 		cs.col = 0;
 		cs.row = cs.min_row;
@@ -57,7 +58,12 @@ t_cs_line	*cs_master(char *prompt, int init)
 		cs.max_scroll = 0;
 		cs.input = ft_strnew(0);
 		cs.prompt = prompt;
-		cs.history = NULL;
+		cs.clipb.x = -1;
+		cs.clipb.y = -1;
+		cs.clipboard = NULL;
+		cs.sig_int = 0;
+		cs.sig_eof = 0;
+		cs.old_history = NULL;
 	}
 	return (&cs);
 }

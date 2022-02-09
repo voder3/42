@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_dlstdelone.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/12 18:48:07 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/02/11 21:14:10 by ambelghi         ###   ########.fr       */
+/*   Created: 2020/07/01 14:03:17 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:03:17 by pacharbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	ft_dlstdelone(t_dlist **alst)
 {
 	t_dlist *tmp;
-    t_dlist *prev;
+	t_dlist *prev;
 	t_dlist	*next;
 
-    if (alst && (tmp = *alst))
-    {
+	if (alst && (tmp = *alst))
+	{
 		prev = tmp->prev;
 		next = tmp->next;
 		if (next)
@@ -27,7 +27,7 @@ void	ft_dlstdelone(t_dlist **alst)
 		if (prev)
 			prev->next = next;
 		ft_memdel((void **)&tmp->data);
-        ft_memdel((void **)&tmp);
+		ft_memdel((void **)&tmp);
 		alst = NULL;
-    }
+	}
 }

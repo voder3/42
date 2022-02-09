@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exp.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:16 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:16 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "ft_printf.h"
 #include "lexer.h"
@@ -35,5 +47,13 @@ int	l_exp_brack(t_lexer *lexer, char c)
 		else
 			lexer->state = S_TK_WORD;
 	}
+	return (1);
+}
+
+int	l_exp_add(t_lexer *lexer, char c)
+{
+	l_buffer_add(lexer, c);
+	if (l_get_last_flag(lexer))
+		lexer->state = S_FLAG;
 	return (1);
 }

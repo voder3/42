@@ -3,46 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmerieux <hmerieux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/12 18:51:43 by hmerieux          #+#    #+#             */
-/*   Updated: 2020/01/12 18:51:45 by hmerieux         ###   ########.fr       */
+/*   Created: 2020/07/01 14:03:21 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:03:21 by pacharbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <stdlib.h>
 #include "libft.h"
 
-static	int		find_len(va_list ap, int nb)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	va_list	ap2;
-	int		len;
-	char	*s;
+	char	*str;
 
-	len = 0;
-	va_copy(ap2, ap);
-	while (nb--)
-	{
-		s = va_arg(ap2, char *);
-		len += ft_strlen(s);
-	}
-	va_end(ap2);
-	return (len);
-}
-
-char			*ft_strjoin(int nb, ...)
-{
-	va_list	ap;
-	char	*dst;
-	int		len;
-
-	va_start(ap, nb);
-	len = find_len(ap, nb);
-	if (!(dst = ft_strnew(len)))
-		exit(EXIT_FAILURE);
-	while (nb--)
-		ft_strcat(dst, va_arg(ap, char *));
-	va_end(ap);
-	return (dst);
+	if (!s1 || !s2 || !(str = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
+		return (NULL);
+	if (!(str = ft_strcat(str, (char *)s1))
+	|| !(str = ft_strcat(str, (char *)s2)))
+		return (NULL);
+	return (str);
 }

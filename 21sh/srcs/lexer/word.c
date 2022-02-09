@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   word.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:18 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:18 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "ft_printf.h"
 #include "lexer.h"
@@ -14,6 +26,8 @@ int	l_build_word(t_lexer *lexer, char c)
 
 int	l_delim_word(t_lexer *lexer, char c)
 {
+	if (lexer->state == S_TK_REDIR && c == '-')
+		return (l_add_hyphen_redir(lexer, c));
 	l_delim_token(lexer, c);
 	l_build_word(lexer, c);
 	return (1);

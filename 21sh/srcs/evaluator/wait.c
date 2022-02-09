@@ -1,106 +1,89 @@
-#include "exec.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wait.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:16 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:16 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
-#include "sys/types.h"
-#include "sys/wait.h"
+#include "exec.h"
+#include "sh.h"
+#include "ft_printf.h"
+#include "job_control.h"
+#include <sys/wait.h>
 
-int			ft_lsthave(t_list *lst, int (*f)(t_list *elem)) // mettre dans lib
+void			aplylyse_wstatus(t_process *p, int wstatus)
 {
-	int		nb;
-
-	nb = 0;
-	while (lst)
-	{
-		nb += f(lst);
-		lst = lst->next;
-	}
-	return (nb);
-}
-
-int			has_running(t_list *lst)
-{
-	t_process *p;
-
-	p = lst->data;
-	if (p->status == RUNNING)
-		return (1);
-	return (0);
-}
-
-t_process	*find_process_by_pid(t_list *lst, pid_t child)
-{
-	t_process *p;
-
-	while (lst)
-	{
-		p = lst->data;
-		if (p->pid == child)
-			return (p);
-		lst = lst->next;
-	}
-	return (NULL);
-}
-
-int		aplylyse_wstatus(t_process *p, int wstatus)
-{
-	// pour sigint ou sigtstp definir directement dans job ou parcourir la list pour update
 	if (WIFEXITED(wstatus))
 	{
-		p->status = SUCCES;
-		p->retour = WEXITSTATUS(wstatus);
+		p->ret = WEXITSTATUS(wstatus);
+		p->status = p->ret & (126 | 127) ? FAILED : COMPLETED;
 	}
 	else if (WIFSIGNALED(wstatus))
 	{
-		p->status = KILLED; //en attendant de config toutes les possibilites;
-		p->retour = WTERMSIG(wstatus);
+		p->status = KILLED;
+		p->ret = WTERMSIG(wstatus);
 	}
 	else if (WIFSTOPPED(wstatus))
 	{
-		p->status = STOPPED ; // anakyser en fonction du signal
-		p->retour = WSTOPSIG(wstatus);
+		p->status = STOPPED;
+		p->ret = WSTOPSIG(wstatus);
 	}
-	return (0);
 }
 
-int		update_process(t_list *lst, pid_t child, int wstatus)
+void			update_process(t_list *lst, pid_t child, int wstatus)
 {
 	t_process *p;
 
+	if (child == -1)
+		return ;
 	p = find_process_by_pid(lst, child);
-	if (!(p))                          //debug
-		ex("[Update Process] PID Non Trouve");
 	aplylyse_wstatus(p, wstatus);
-	return (0);
 }
 
-int		wait_process(t_job *job)
+static void		update_job(t_job *j)
+{
+	t_list		*lst;
+	t_process	*tmp;
+
+	if ((tmp = find_process_by_status(j->process, STOPPED)))
+	{
+		j->ret = 128 + tmp->ret;
+		j->status = STOPPED;
+		if (!j->id)
+			add_job_cfg(j);
+		print_message_signal(j->ret - 128, j, 0);
+	}
+	else
+	{
+		lst = ft_lstgettail(j->process);
+		tmp = lst->data;
+		j->status = ((t_process *)(lst->data))->status;
+		if (j->status == KILLED)
+			j->ret = print_message_signal(tmp->ret, j, 0);
+		else
+			j->ret = tmp->ret;
+	}
+}
+
+void			wait_process(t_job *job)
 {
 	pid_t		pid_child;
-	int			wstatus;
+	int32_t		wstatus;
 
-	printf("\t[WAIT PROCESS]\t pgid = [%d]\n", job->pgid);
+	debug_print_all_process(job->process, "Before Wait");
 	while (ft_lsthave(job->process, has_running))
 	{
 		wstatus = 0;
-		printf("dans wait\n");
 		pid_child = waitpid(-job->pgid, &wstatus, WUNTRACED);
-		if (pid_child == -1)
-			ex("[WAIT_PROCESS] error waitpid");
 		update_process(job->process, pid_child, wstatus);
 	}
-
-
-	/* DEBUG  */
-		t_process *process;
-		t_list *j = job->process;
-		printf("\n\n");
-		while (j)
-		{
-			process = j->data;
-			printf("cmd = [%s]\t retour = [%d]\t status = [%d]\n", process->path, process->retour, process->status);
-			j = j->next;
-		}
-	/*		*/
-	printf("sort du wait\n");
-	return (0);
+	update_job(job);
+	debug_print_all_process(job->process, "After Wait");
+	return ;
 }
-

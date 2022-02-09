@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exp.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:17 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:17 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "ft_printf.h"
 #include "lexer.h"
 
-void	init_exp_state(int (*token_builder[8][11])(t_lexer *, char))
+void	init_exp_state(int (*token_builder[9][12])(t_lexer *, char))
 {
 	token_builder[S_EXP][C_INHIBITOR] = l_build_inhib;
 	token_builder[S_EXP][C_CONTROL] = l_delim_control;
@@ -10,9 +22,10 @@ void	init_exp_state(int (*token_builder[8][11])(t_lexer *, char))
 	token_builder[S_EXP][C_NEWLINE] = l_delim_newline;
 	token_builder[S_EXP][C_DIGIT] = l_buffer_add;
 	token_builder[S_EXP][C_EXP] = l_build_exp;
-	token_builder[S_EXP][C_BLANK] = l_buffer_add;
+	token_builder[S_EXP][C_BLANK] = l_delim_token;
 	token_builder[S_EXP][C_EOI] = l_delim_token;
 	token_builder[S_EXP][C_BRACK] = l_exp_brack;
 	token_builder[S_EXP][C_EQU] = l_buffer_add;
-	token_builder[S_EXP][C_OTHER] = l_buffer_add;
+	token_builder[S_EXP][C_HASH] = l_exp_add;
+	token_builder[S_EXP][C_OTHER] = l_exp_add;
 }

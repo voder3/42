@@ -1,68 +1,50 @@
-#include <unistd.h>
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pacharbo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/01 14:12:19 by pacharbo          #+#    #+#             */
+/*   Updated: 2020/07/01 14:12:19 by pacharbo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
-#include "ft_printf.h"
-#include "get_next_line.h"
-#include "lexer.h"
-#include "parser.h"
-#include "line_edition.h"
-#include "exec.h"
 #include "sh.h"
+#include "var.h"
+#include "job_control.h"
 
-void	print_debug(t_list *elem);
-
-void	init_lexer(t_lexer *lexer)
+t_cfg	*cfg_shell(void)
 {
-	lexer->src = NULL;
-	lexer->curr = NULL;
-	lexer->state = S_TK_START;
-	lexer->token_lst = NULL;
-	lexer->curr_token = NULL;
-	ft_bzero(lexer->buffer, L_BUFF_SIZE);
-	lexer->buff_i = 0;
-	lexer->flags = 0;
-	lexer->here_queue = NULL;
-	lexer->curr_here = NULL;
-	lexer->flag_queue = NULL;
-	lexer->curr_flag = NULL;
-}
+	static t_cfg shell;
 
-int		ft_lexer(char *str, t_lexer *lexer);
+	return (&shell);
+}
 
 int		main(int ac, char **av, char **env)
 {
-	ssize_t		ret;
+	int			ret;
 	char		*line;
-	t_lexer		*lexer;
+	t_lexer		lexer;
 	t_parser	parser;
-	t_dlist		*hist;
+	t_cfg		*shell;
 
-	(void)ac;
-	(void)av;
-	(void)env;
-	t_cfg		shell;
-	
-	
-	init_shell(&shell, env);
-	(void)ac;
-	(void)av;
-	lexer = (t_lexer *)ft_memalloc(sizeof(t_lexer));
-	ret = 0;
-	hist = init_history();
-	while ((line = ft_prompt("21sh-1.0$ ", &hist)))
+	shell = init_shell(env, av, ac);
+	while (1)
 	{
-		if (ft_strequ("exit", line))
-			exit(0);
-		set_signal_ign();
-		init_lexer(lexer);
-		ft_lexer(line, lexer);
-		ft_lstiter(lexer->token_lst, print_debug);
-		ft_parser(lexer, &parser);
-		ft_eval(&shell, parser.table);
-
-		//ft_printf("$> ");
+		check_child(cfg_shell(), cfg_shell()->job);
+		build_prompt_ps1(0);
+		if ((ret = line_edition_routine(&line)) <= 0
+		|| (ret = lexer_routine(&line, &lexer)) <= 0
+		|| (ret = parser_routine(&lexer, &parser)) <= 0
+		|| (ret = eval_routine(&parser)) <= 0)
+		{
+			if (ret == -1)
+				break ;
+			else if (!ret && !shell->interactive)
+				exit_routine(shell, 2);
+		}
 	}
-	ft_dlstdel(&hist);
-	return (0);
+	exit_routine(shell, ft_atoi(find_var_value(shell->sp, "?")));
 }
-
